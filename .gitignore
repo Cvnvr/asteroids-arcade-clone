@@ -6,13 +6,13 @@
 !README.md
 
 # Exclude the /Project/ folder
-!Astroids Clone/
+!Asteroids Clone/
 
 # Ignore everything inside project folder
-Astroids Clone/*
+Asteroids Clone/*
 
 # Select which folders become excluded
-!Astroids Clone/Assets/
-!Astroids Clone/UnityPackageManager/
-!Astroids Clone/ProjectSettings/
-!Astroids Clone/Packages
+!Asteroids Clone/Assets/
+!Asteroids Clone/UnityPackageManager/
+!Asteroids Clone/ProjectSettings/
+!Asteroids Clone/Packages
