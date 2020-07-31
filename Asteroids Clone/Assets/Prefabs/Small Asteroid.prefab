@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5425568528880958880}
   - component: {fileID: 50048231210948342}
   - component: {fileID: 8021720747251175845}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Small Asteroid
   m_TagString: Asteroid
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c05399017f1a0ed4fb8fb53a399e9f7c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1ef63f6a8c7b81d408013c4b26e26d1e, type: 3}
   m_Color: {r: 0, g: 0.7518301, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -131,6 +131,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebb0bacafa2675348ab910611cf68e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  forceMultiplier: 1
+  speed: 3
   score: 100

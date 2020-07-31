@@ -6,8 +6,8 @@ public class SmallAsteroid : Asteroid
 {
     public override void TakeDamage()
     {
-        // Check how many asteroids are still alive
-        AsteroidSpawner.Instance.ValidateRemainingAsteroids();
+        // Validate remaining asteroid's count to know when to start next level
+        // AsteroidSpawner.Instance.ValidateRemainingAsteroids();
 
         base.TakeDamage();
     }

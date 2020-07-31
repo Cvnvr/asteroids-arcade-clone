@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1394324490039627047}
   - component: {fileID: 50919527539034158}
   - component: {fileID: 2977530900829847080}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Medium Asteroid
   m_TagString: Asteroid
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b1566220876aa1a4cacc0fb71f08b67e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 189b09e5e2de25048ac5a5dcf80f9119, type: 3}
   m_Color: {r: 0, g: 0.7518301, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -131,6 +131,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b7f7a4a8bf64e9458511c7416a6e2a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  forceMultiplier: 1
+  speed: 2
   score: 100

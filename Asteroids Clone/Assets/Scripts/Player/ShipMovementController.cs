@@ -1,29 +1,28 @@
 ﻿using UnityEngine;
 
-public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEnemy, IScoreGiver
+public class ShipMovementController : MonoBehaviour, IMoveable
 {
     #region Variables
     private ScreenBoundsHandler screenBoundsHandler;
 
     private Rigidbody2D rigidbody;
 
-    [Header("Movement Variables")]
-    [SerializeField] private float speed = 1f;
+    [Header("Movement Parameters")]
+    [SerializeField] private float forwardThrust;
 
-    private Vector2 movementDirection;
+    [SerializeField] private float rotationalThrust;
 
-    [Header("Score")]
-    [SerializeField] private int score = 100;
+    [SerializeField] private float maxSpeed;
+    [SerializeField] private float maxRotationalSpeed;
 
+    private float forwardInput;
+    private float rotationalInput;
     #endregion Variables
 
     #region Initialisation
     private void Awake()
     {
         ValidateRigidbody();
-
-        // Ignore collisions with other asteroids (8 = 'Asteroids')
-        Physics2D.IgnoreLayerCollision(8, 8);
 
         #region Local Functions
         void ValidateRigidbody()
@@ -41,19 +40,15 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
 
     private void Start()
     {
-        // Cache singleton reference as it's called in Update repeatedly
         screenBoundsHandler = ScreenBoundsHandler.Instance;
-    }
-
-    public void OnObjectSpawn()
-    {
-        // Randomise the movement direction of the asteroid to introduce variety
-        movementDirection = new Vector2(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10));
     }
     #endregion Initialisation
 
     private void Update()
     {
+        forwardInput = Input.GetAxis("Vertical");
+        rotationalInput = Input.GetAxis("Horizontal");
+
         KeepObjectWithinScreenBounds();
     }
 
@@ -62,11 +57,8 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
         Move();
     }
 
-    public virtual void Move()
+    public void Move()
     {
-        // Normalize velocity to maintain constant speed
-        rigidbody.velocity = rigidbody.velocity.normalized * speed;
-        rigidbody.AddForce(movementDirection, ForceMode2D.Force);
     }
 
     private void KeepObjectWithinScreenBounds()
@@ -79,21 +71,22 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
 
         Vector2 newPosition = transform.position;
 
+        // beyond LEFT of screen
         if (transform.position.x > screenBoundsHandler.LeftSide)
         {
             newPosition.x = screenBoundsHandler.RightSide;
         }
-
+        // beyond RIGHT of screen
         if (transform.position.x < screenBoundsHandler.RightSide)
         {
             newPosition.x = screenBoundsHandler.LeftSide;
         }
-
+        // beyond TOP of screen
         if (transform.position.y > screenBoundsHandler.TopSide)
         {
             newPosition.y = screenBoundsHandler.BottomSide;
         }
-
+        // beyond BOTTOM of screen
         if (transform.position.y < screenBoundsHandler.BottomSide)
         {
             newPosition.y = screenBoundsHandler.TopSide;
@@ -101,38 +94,5 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
 
         // Set new inverted position
         transform.position = newPosition;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Projectile"))
-        {
-            TakeDamage();
-        }
-
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            DamagePlayer();
-        }
-    }
-
-    public virtual void TakeDamage()
-    {
-        // TODO add particle effects
-        // TODO play sound effect
-
-        GiveScore();
-    }
-
-    public virtual void DamagePlayer()
-    {
-        // TODO update lives, etc
-
-        // TODO destroy player
-    }
-
-    public virtual void GiveScore()
-    {
-        // throw new System.NotImplementedException();
     }
 }
