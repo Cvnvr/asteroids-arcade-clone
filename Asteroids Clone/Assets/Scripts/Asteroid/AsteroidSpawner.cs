@@ -6,6 +6,9 @@ using UnityEngine;
 public class AsteroidSpawner : MonoBehaviour
 {
     #region Variables
+    private static AsteroidSpawner _instance;
+    public static AsteroidSpawner Instance { get => _instance; }
+    
     [Header("Astroid References")]
     [SerializeField] private GameObject largeAsteroidPrefab;
     [SerializeField] private Transform largeAsteroidParent;
@@ -19,6 +22,30 @@ public class AsteroidSpawner : MonoBehaviour
     [Header("Spawner Preferences")]
     [SerializeField] private List<Transform> spawnerLocations;
     private readonly int largeAsteroidSpawnCount = 5;
+    private readonly int asteroidSplitCount = 2;
+
+    private Color32 asteroidLevelColor;
+    #endregion
+
+    #region Initialisation
+    private void Awake()
+    {
+        GenerateInstance();
+
+        #region Local Functions
+        void GenerateInstance()
+        {
+            if (_instance != null && _instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                _instance = this;
+            }
+        } 
+        #endregion
+    } 
     #endregion
 
     private void Start()
@@ -31,13 +58,14 @@ public class AsteroidSpawner : MonoBehaviour
         // Ensure all astroids have been destroyed before instantiating the next set
         ClearAllAstroids();
 
+        // Randomise the colour of the astroids each level
+        asteroidLevelColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+
         int[] spawnIndecies = GetSpawnLocations();
         for (int i = 0; i < largeAsteroidSpawnCount; i++)
         {
-            GameObject astroid = Instantiate(largeAsteroidPrefab, largeAsteroidParent, true);
-            astroid.transform.localPosition = spawnerLocations[spawnIndecies[i]].transform.localPosition;
-
-            // TODO set colour based on level
+            InstantiateAsteroid(largeAsteroidPrefab, largeAsteroidParent,
+                spawnerLocations[spawnIndecies[i]].localPosition);
         }
 
         #region Local Functions
@@ -80,6 +108,51 @@ public class AsteroidSpawner : MonoBehaviour
             {
                 DestroyImmediate(parent.GetChild(i).gameObject);
             }
+        } 
+        #endregion
+    }
+
+    public void SplitLargeAsteroid(Vector2 position)
+    {
+        for (int i = 0; i < asteroidSplitCount; i++)
+        {
+            InstantiateAsteroid(mediumAsteroidPrefab, mediumAsteroidParent, position);
+        }
+    }
+
+    public void SplitMediumAsteroid(Vector2 position)
+    {
+        for (int i = 0; i < asteroidSplitCount; i++)
+        {
+            InstantiateAsteroid(smallAsteroidPrefab, smallAsteroidParent, position);
+        }
+    }
+
+    private void InstantiateAsteroid(GameObject prefab, Transform parent, Vector2 position)
+    {
+        GameObject astroid = Instantiate(prefab, parent, true);
+        astroid.transform.localPosition = position;
+
+        astroid.GetComponent<SpriteRenderer>().color = asteroidLevelColor;
+    }
+
+    public void ValidateRemainingAsteroids()
+    {
+        if (AreAllAsteroidsDestroyed())
+        {
+            // TODO increment level
+        }
+
+        #region Local Functions
+        bool AreAllAsteroidsDestroyed()
+        {
+            if ((largeAsteroidParent.childCount == 0) && (mediumAsteroidParent.childCount == 0)
+                && (smallAsteroidParent.childCount == 0))
+            {
+                return true;
+            }
+
+            return false;
         } 
         #endregion
     }

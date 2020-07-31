@@ -45,7 +45,7 @@ public class Asteroid : MonoBehaviour, IMoveable, IShootable, IEnemy, IScoreGive
 
     private void Update()
     {
-        KeepAsteroidWithinScreen();
+        KeepObjectWithinScreenBounds();
     }
 
     private void FixedUpdate()
@@ -53,7 +53,7 @@ public class Asteroid : MonoBehaviour, IMoveable, IShootable, IEnemy, IScoreGive
         Move();
     }
 
-    private void KeepAsteroidWithinScreen()
+    private void KeepObjectWithinScreenBounds()
     {
         Vector2 newPosition = transform.position;
 
@@ -117,7 +117,7 @@ public class Asteroid : MonoBehaviour, IMoveable, IShootable, IEnemy, IScoreGive
         // TODO add particle effects
         // TODO play sound effect
 
-        Destroy(this.gameObject);
+        DestroyImmediate(this.gameObject);
     }
 
     public virtual void GiveScore()

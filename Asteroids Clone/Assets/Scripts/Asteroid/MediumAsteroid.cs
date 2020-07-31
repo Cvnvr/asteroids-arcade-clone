@@ -6,7 +6,7 @@ public class MediumAsteroid : Asteroid
 {
     public override void TakeDamage()
     {
-        // TODO split into 2x small astroids
+        AsteroidSpawner.Instance.SplitMediumAsteroid(this.transform.position);
 
         base.TakeDamage();
     }
