@@ -6,13 +6,10 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
     #region Variables
     private Rigidbody2D rigidbody;
 
-    [Header("Movement Variables")]
     [SerializeField] private float speed = 1f;
     private Vector2 movementDirection;
 
-    [Header("Score")]
     [SerializeField] private int score = 100;
-
     #endregion Variables
 
     #region Initialisation
@@ -20,31 +17,37 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
     {
         rigidbody = GetComponent<Rigidbody2D>();
 
-        // Ignore collision with other Asteroids
+        // Ignore collision with other Asteroids (layer 8 = "Asteroids")
         Physics2D.IgnoreLayerCollision(8, 8);
     }
+    #endregion Initialisation
 
     public void OnObjectSpawn()
     {
         // Randomise the movement direction of the asteroid to introduce variety
-        movementDirection = new Vector2(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10));
+        float rotation = Random.Range(0f, 361f);
+        float currentRotation = transform.localRotation.eulerAngles.z;
+        transform.localRotation = Quaternion.Euler(new Vector3(0, 0, currentRotation + rotation));
     }
-    #endregion Initialisation
 
     private void FixedUpdate()
     {
         Move();
     }
 
-    public virtual void Move()
+    public void Move()
     {
         // Normalize velocity to maintain constant speed
         rigidbody.velocity = rigidbody.velocity.normalized * speed;
-        rigidbody.AddForce(movementDirection, ForceMode2D.Force);
+        rigidbody.AddForce(transform.up * speed, ForceMode2D.Force);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            DamagePlayer();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -53,30 +56,22 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
         {
             TakeDamage();
         }
-
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            DamagePlayer();
-        }
     }
 
     public virtual void TakeDamage()
     {
         // TODO add particle effects
-        // TODO play sound effect
 
         GiveScore();
     }
 
-    public virtual void DamagePlayer()
+    public void DamagePlayer()
     {
-        // TODO update lives, etc
-
-        // TODO destroy player
+        PlayerLifeHandler.Instance.TakeDamage();
     }
 
-    public virtual void GiveScore()
+    public void GiveScore()
     {
-        // throw new System.NotImplementedException();
+        ScoreTracker.Instance.UpdateScore(score);
     }
 }

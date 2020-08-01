@@ -17,7 +17,7 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
     private readonly int largeAsteroidSpawnCount = 5;
     private readonly int asteroidSplitCount = 2;
 
-    private Color32 asteroidLevelColor;
+    [SerializeField] private AudioSource explosion;
     #endregion Variables
 
     #region Initialisation
@@ -25,24 +25,15 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
     {
         asteroidPooler = GetComponent<AsteroidPooler>();
     }
-
-    private void Start()
-    {
-        // TODO delete this
-        EnableNewBatchOfLargeAsteroids();
-    }
     #endregion Initialisation
 
-    private void EnableNewBatchOfLargeAsteroids()
+    public void EnableNewBatchOfLargeAsteroids()
     {
-        // Randomise the colour of the astroids each level
-        asteroidLevelColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-
         int[] spawnIndecies = GetSpawnLocations();
         for (int i = 0; i < largeAsteroidSpawnCount; i++)
         {
             asteroidPooler.SpawnFromPool(asteroidPooler.LargePoolTag,
-                spawnerLocations[spawnIndecies[i]].localPosition, asteroidLevelColor);
+                spawnerLocations[spawnIndecies[i]].localPosition, LevelManager.Instance.LevelColor);
         }
 
         #region Local Functions
@@ -76,27 +67,71 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
     {
         for (int i = 0; i < asteroidSplitCount; i++)
         {
-            asteroidPooler.SpawnFromPool(asteroidPooler.MediumPoolTag, asteroid.transform.position, asteroidLevelColor);
+            asteroidPooler.SpawnFromPool(asteroidPooler.MediumPoolTag, asteroid.transform.position, LevelManager.Instance.LevelColor);
         }
 
         // Return 'destroyed' asteroid to the pool
         asteroidPooler.ReturnToPool(asteroidPooler.LargePoolTag, asteroid);
+
+        explosion.Play();
     }
 
     public void SplitMediumAsteroid(Asteroid asteroid)
     {
         for (int i = 0; i < asteroidSplitCount; i++)
         {
-            asteroidPooler.SpawnFromPool(asteroidPooler.SmallPoolTag, asteroid.transform.position, asteroidLevelColor);
+            asteroidPooler.SpawnFromPool(asteroidPooler.SmallPoolTag, asteroid.transform.position, LevelManager.Instance.LevelColor);
         }
 
         // Return 'destroyed' asteroid to the pool
         asteroidPooler.ReturnToPool(asteroidPooler.MediumPoolTag, asteroid);
+
+        explosion.Play();
     }
 
     public void DestroySmallAsteroid(Asteroid asteroid)
     {
         // Return 'destroyed' asteroid to the pool
         asteroidPooler.ReturnToPool(asteroidPooler.SmallPoolTag, asteroid);
+
+        explosion.Play();
+    }
+
+    public void ValidateRemainingAsteroids()
+    {
+        if (AreAsteroidsStillThere())
+        {
+            LevelManager.Instance.GoToNextLevel();
+        }
+    }
+
+    private bool AreAsteroidsStillThere()
+    {
+        int largeActiveCount = ReturnActiveCount(asteroidPooler.LargeParent);
+        int mediumActiveCount = ReturnActiveCount(asteroidPooler.MediumParent);
+        int smallActiveCount = ReturnActiveCount(asteroidPooler.SmallParent);
+
+        if ((largeActiveCount == 0) && (mediumActiveCount == 0) && (smallActiveCount == 0))
+        {
+            return true;
+        }
+
+        return false;
+
+        #region Local Functions
+        int ReturnActiveCount(Transform parent)
+        {
+            int activeCount = 0;
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                if (parent.GetChild(i).gameObject.activeInHierarchy)
+                {
+                    activeCount++;
+                }
+            }
+
+            return activeCount;
+        }
+        #endregion Local Functions
     }
 }

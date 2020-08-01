@@ -7,7 +7,7 @@ public class ScreenBoundsHandler : Singleton<ScreenBoundsHandler>
 {
     #region Variables
     private Vector2 screenBounds;
-    private readonly float screenPadding = 1.15f;
+    [SerializeField] private float screenPadding = 1.15f;
 
     // References to each side of the screen
     public float LeftSide { get => screenBounds.x * screenPadding; }

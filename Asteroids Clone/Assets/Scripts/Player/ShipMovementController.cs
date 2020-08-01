@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Video;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class ShipMovementController : MonoBehaviour, IMoveable
@@ -15,7 +16,6 @@ public class ShipMovementController : MonoBehaviour, IMoveable
     [SerializeField] private float rotationalThrust;
     private float rotationalInput;
     [SerializeField] private float maxRotationalSpeed;
-
     #endregion Variables
 
     #region Initialisation

@@ -19,8 +19,13 @@ public class AsteroidPooler : MonoBehaviour
     [SerializeField] private AsteroidPool smallPool;
 
     public string LargePoolTag { get => largePool.tag; }
+    public Transform LargeParent { get => largePool.parent; }
+
     public string MediumPoolTag { get => mediumPool.tag; }
+    public Transform MediumParent { get => mediumPool.parent; }
+
     public string SmallPoolTag { get => smallPool.tag; }
+    public Transform SmallParent { get => smallPool.parent; }
 
     private Dictionary<string, Queue<Asteroid>> poolDictionary;
     #endregion Variables

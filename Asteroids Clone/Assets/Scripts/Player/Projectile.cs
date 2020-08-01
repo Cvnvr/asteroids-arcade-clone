@@ -9,6 +9,8 @@ public class Projectile : MonoBehaviour, IPooledObject
     #region Variables
     private Rigidbody2D rigidbody;
 
+    [SerializeField] private AudioSource fireSound;
+
     [SerializeField] private float lifeSpan = 1f;
     #endregion Variables
 
@@ -21,6 +23,8 @@ public class Projectile : MonoBehaviour, IPooledObject
     public void OnObjectSpawn()
     {
         Invoke("DestroySelf", lifeSpan);
+
+        fireSound.Play();
     }
     #endregion Initialisation
 
