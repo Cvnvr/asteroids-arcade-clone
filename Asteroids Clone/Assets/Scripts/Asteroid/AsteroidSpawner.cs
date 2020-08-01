@@ -93,4 +93,10 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
         // Return 'destroyed' asteroid to the pool
         asteroidPooler.ReturnToPool(asteroidPooler.MediumPoolTag, asteroid);
     }
+
+    public void DestroySmallAsteroid(Asteroid asteroid)
+    {
+        // Return 'destroyed' asteroid to the pool
+        asteroidPooler.ReturnToPool(asteroidPooler.SmallPoolTag, asteroid);
+    }
 }

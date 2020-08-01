@@ -9,6 +9,8 @@ public class SmallAsteroid : Asteroid
         // Validate remaining asteroid's count to know when to start next level
         // AsteroidSpawner.Instance.ValidateRemainingAsteroids();
 
+        AsteroidSpawner.Instance.DestroySmallAsteroid(this);
+
         base.TakeDamage();
     }
 }

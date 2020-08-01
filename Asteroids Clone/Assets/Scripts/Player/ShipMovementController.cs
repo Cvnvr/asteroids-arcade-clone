@@ -1,55 +1,36 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class ShipMovementController : MonoBehaviour, IMoveable
 {
     #region Variables
-    private ScreenBoundsHandler screenBoundsHandler;
-
     private Rigidbody2D rigidbody;
 
-    [Header("Movement Parameters")]
+    // Forward movement
     [SerializeField] private float forwardThrust;
-
-    [SerializeField] private float rotationalThrust;
-
+    private float forwardInput;
     [SerializeField] private float maxSpeed;
+
+    // Rotational movement
+    [SerializeField] private float rotationalThrust;
+    private float rotationalInput;
     [SerializeField] private float maxRotationalSpeed;
 
-    private float forwardInput;
-    private float rotationalInput;
     #endregion Variables
 
     #region Initialisation
     private void Awake()
     {
-        ValidateRigidbody();
-
-        #region Local Functions
-        void ValidateRigidbody()
-        {
-            if (GetComponent<Rigidbody2D>() == null)
-            {
-                gameObject.AddComponent(typeof(Rigidbody2D));
-                gameObject.GetComponent<Rigidbody2D>().gravityScale = 0f;
-            }
-
-            rigidbody = GetComponent<Rigidbody2D>();
-        }
-        #endregion Local Functions
-    }
-
-    private void Start()
-    {
-        screenBoundsHandler = ScreenBoundsHandler.Instance;
+        rigidbody = GetComponent<Rigidbody2D>();
     }
     #endregion Initialisation
 
     private void Update()
     {
-        forwardInput = Input.GetAxis("Vertical");
-        rotationalInput = Input.GetAxis("Horizontal");
+        forwardInput = PlayerInputHandler.GetForwardInput();
+        rotationalInput = PlayerInputHandler.GetRotationalInput();
 
-        KeepObjectWithinScreenBounds();
+        rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, maxSpeed);
     }
 
     private void FixedUpdate()
@@ -59,40 +40,11 @@ public class ShipMovementController : MonoBehaviour, IMoveable
 
     public void Move()
     {
-    }
+        // MOVE
+        rigidbody.AddForce(forwardInput * forwardThrust * Time.deltaTime * transform.up);
 
-    private void KeepObjectWithinScreenBounds()
-    {
-        if (screenBoundsHandler == null)
-        {
-            Debug.LogWarning($"[WARNING] The object {this.gameObject.name} cannot access the Screen Bounds Handler.");
-            return;
-        }
-
-        Vector2 newPosition = transform.position;
-
-        // beyond LEFT of screen
-        if (transform.position.x > screenBoundsHandler.LeftSide)
-        {
-            newPosition.x = screenBoundsHandler.RightSide;
-        }
-        // beyond RIGHT of screen
-        if (transform.position.x < screenBoundsHandler.RightSide)
-        {
-            newPosition.x = screenBoundsHandler.LeftSide;
-        }
-        // beyond TOP of screen
-        if (transform.position.y > screenBoundsHandler.TopSide)
-        {
-            newPosition.y = screenBoundsHandler.BottomSide;
-        }
-        // beyond BOTTOM of screen
-        if (transform.position.y < screenBoundsHandler.BottomSide)
-        {
-            newPosition.y = screenBoundsHandler.TopSide;
-        }
-
-        // Set new inverted position
-        transform.position = newPosition;
+        // ROTATE
+        float rotation = Mathf.Clamp(rotationalInput * rotationalThrust * Time.deltaTime, -maxRotationalSpeed, maxRotationalSpeed);
+        rigidbody.AddTorque(-rotation);
     }
 }

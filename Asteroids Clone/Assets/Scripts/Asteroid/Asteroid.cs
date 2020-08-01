@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEnemy, IScoreGiver
 {
     #region Variables
-    private ScreenBoundsHandler screenBoundsHandler;
-
     private Rigidbody2D rigidbody;
 
     [Header("Movement Variables")]
     [SerializeField] private float speed = 1f;
-
     private Vector2 movementDirection;
 
     [Header("Score")]
@@ -20,29 +18,10 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
     #region Initialisation
     private void Awake()
     {
-        ValidateRigidbody();
+        rigidbody = GetComponent<Rigidbody2D>();
 
-        // Ignore collisions with other asteroids (8 = 'Asteroids')
+        // Ignore collision with other Asteroids
         Physics2D.IgnoreLayerCollision(8, 8);
-
-        #region Local Functions
-        void ValidateRigidbody()
-        {
-            if (GetComponent<Rigidbody2D>() == null)
-            {
-                gameObject.AddComponent(typeof(Rigidbody2D));
-                gameObject.GetComponent<Rigidbody2D>().gravityScale = 0f;
-            }
-
-            rigidbody = GetComponent<Rigidbody2D>();
-        }
-        #endregion Local Functions
-    }
-
-    private void Start()
-    {
-        // Cache singleton reference as it's called in Update repeatedly
-        screenBoundsHandler = ScreenBoundsHandler.Instance;
     }
 
     public void OnObjectSpawn()
@@ -51,11 +30,6 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
         movementDirection = new Vector2(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10));
     }
     #endregion Initialisation
-
-    private void Update()
-    {
-        KeepObjectWithinScreenBounds();
-    }
 
     private void FixedUpdate()
     {
@@ -69,41 +43,11 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
         rigidbody.AddForce(movementDirection, ForceMode2D.Force);
     }
 
-    private void KeepObjectWithinScreenBounds()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (screenBoundsHandler == null)
-        {
-            Debug.LogWarning($"[WARNING] The object {this.gameObject.name} cannot access the Screen Bounds Handler.");
-            return;
-        }
-
-        Vector2 newPosition = transform.position;
-
-        if (transform.position.x > screenBoundsHandler.LeftSide)
-        {
-            newPosition.x = screenBoundsHandler.RightSide;
-        }
-
-        if (transform.position.x < screenBoundsHandler.RightSide)
-        {
-            newPosition.x = screenBoundsHandler.LeftSide;
-        }
-
-        if (transform.position.y > screenBoundsHandler.TopSide)
-        {
-            newPosition.y = screenBoundsHandler.BottomSide;
-        }
-
-        if (transform.position.y < screenBoundsHandler.BottomSide)
-        {
-            newPosition.y = screenBoundsHandler.TopSide;
-        }
-
-        // Set new inverted position
-        transform.position = newPosition;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Projectile"))
         {

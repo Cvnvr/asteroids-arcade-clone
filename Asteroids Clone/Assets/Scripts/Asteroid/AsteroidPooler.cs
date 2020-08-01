@@ -22,11 +22,11 @@ public class AsteroidPooler : MonoBehaviour
     public string MediumPoolTag { get => mediumPool.tag; }
     public string SmallPoolTag { get => smallPool.tag; }
 
-    [SerializeField] private Dictionary<string, Queue<Asteroid>> poolDictionary;
+    private Dictionary<string, Queue<Asteroid>> poolDictionary;
     #endregion Variables
 
     #region Initialisation
-    private void Start()
+    private void Awake()
     {
         poolDictionary = new Dictionary<string, Queue<Asteroid>>();
 
@@ -38,14 +38,13 @@ public class AsteroidPooler : MonoBehaviour
 
     private Queue<Asteroid> InitialisePoolQueue(AsteroidPool pool)
     {
-        // Create a new queue
         Queue<Asteroid> objectPool = new Queue<Asteroid>();
 
         // Iterate over the specified size of the queue
         for (int i = 0; i < pool.size; i++)
         {
             // Instantiate the object and add it to the queue
-            Asteroid obj = (Asteroid)Instantiate(pool.prefab, pool.parent, true);
+            Asteroid obj = Instantiate(pool.prefab, pool.parent, true);
             obj.gameObject.SetActive(false);
 
             if (pool.sprites.Count == 0)

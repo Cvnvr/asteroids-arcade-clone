@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5425568528880958880}
   - component: {fileID: 50048231210948342}
   - component: {fileID: 8021720747251175845}
+  - component: {fileID: 114510760114348938}
   m_Layer: 8
   m_Name: Small Asteroid
   m_TagString: Asteroid
@@ -110,7 +111,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.5
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -131,5 +132,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebb0bacafa2675348ab910611cf68e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 2
   score: 100
+--- !u!114 &114510760114348938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8754784837747967233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee15b33b4561124ca0831f8adfbd72c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
