@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Video;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class ShipMovementController : MonoBehaviour, IMoveable
@@ -16,6 +15,9 @@ public class ShipMovementController : MonoBehaviour, IMoveable
     [SerializeField] private float rotationalThrust;
     private float rotationalInput;
     [SerializeField] private float maxRotationalSpeed;
+
+    public delegate void OnPlayerCollision();
+    public event OnPlayerCollision onPlayerTakeDamage;
     #endregion Variables
 
     #region Initialisation
@@ -46,5 +48,13 @@ public class ShipMovementController : MonoBehaviour, IMoveable
         // ROTATE
         float rotation = Mathf.Clamp(rotationalInput * rotationalThrust * Time.deltaTime, -maxRotationalSpeed, maxRotationalSpeed);
         rigidbody.AddTorque(-rotation);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Asteroid"))
+        {
+            onPlayerTakeDamage.Invoke();
+        }
     }
 }

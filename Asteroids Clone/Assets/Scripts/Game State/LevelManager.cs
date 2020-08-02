@@ -35,14 +35,25 @@ public class LevelManager : MonoBehaviour
 
     public void GoToNextLevel()
     {
+        // Increment the current level
         levelInformation.CurrentLevel++;
 
         // Randomise the colour of the astroids each level
-        levelInformation.LevelColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+        if (levelInformation.CurrentLevel == 1)
+        {
+            // Just return new random colour if level 1
+            levelInformation.LevelColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+        }
+        else
+        {
+            // Generate a distinct colour each subsequent round
+            levelInformation.LevelColor = ColorGenerator.GenerateDistinctRandomColor(levelInformation.LevelColor);
+        }
 
         // Spawn next set of asteroids
         asteroidSpawner.EnableNewBatchOfLargeAsteroids();
 
+        // Update in-game level label
         levelLabel.text = levelInformation.CurrentLevel.ToString();
     }
 }

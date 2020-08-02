@@ -15,6 +15,11 @@ public class ActiveMenuStateHandler : MonoBehaviour
     [Header("Main Menu Containers")]
     [SerializeField] private GameObject menuButtonsContainer;
     [SerializeField] private GameObject highScoresContainer;
+
+    [Header("Score Containers")]
+    [SerializeField] private GameObject gameOverContainer;
+    [SerializeField] private GameObject noNewHighScoreContainer;
+    [SerializeField] private GameObject newHighScoreContainer;
     #endregion Variables
 
     #region Event Subscriptions
@@ -60,6 +65,7 @@ public class ActiveMenuStateHandler : MonoBehaviour
     public void DisplayScoreMenu()
     {
         ToggleActiveMenu(scoreScreen);
+        DisplayGameOver();
     }
 
     private void ToggleActiveMenu(GameObject screen)
@@ -98,4 +104,27 @@ public class ActiveMenuStateHandler : MonoBehaviour
         highScoresContainer.SetActive(false);
     }
     #endregion Menu Containers
+
+    #region Game Over Containers
+    public void DisplayGameOver()
+    {
+        gameOverContainer.SetActive(true);
+        noNewHighScoreContainer.SetActive(false);
+        newHighScoreContainer.SetActive(false);
+    }
+
+    public void DisplayNoNewHighScoreContainer()
+    {
+        gameOverContainer.SetActive(false);
+        noNewHighScoreContainer.SetActive(true);
+        newHighScoreContainer.SetActive(false);
+    }
+
+    public void DisplayNewHighScoreContainer()
+    {
+        gameOverContainer.SetActive(false);
+        noNewHighScoreContainer.SetActive(false);
+        newHighScoreContainer.SetActive(true);
+    }
+    #endregion Game Over Containers
 }

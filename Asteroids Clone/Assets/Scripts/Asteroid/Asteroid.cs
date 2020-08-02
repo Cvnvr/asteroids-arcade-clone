@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEnemy, IScoreGiver
+public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IScoreGiver
 {
     #region Variables
     protected AsteroidSpawner asteroidSpawner;
@@ -47,14 +47,6 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
         rigidbody.AddForce(transform.up * speed, ForceMode2D.Force);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            DamagePlayer();
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Projectile"))
@@ -68,11 +60,6 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
         // TODO add particle effects
 
         GiveScore();
-    }
-
-    public void DamagePlayer()
-    {
-        PlayerLifeHandler.Instance.TakeDamage();
     }
 
     public void GiveScore()

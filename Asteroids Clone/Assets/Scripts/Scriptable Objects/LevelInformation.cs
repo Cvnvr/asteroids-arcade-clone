@@ -5,6 +5,6 @@ public class LevelInformation : ScriptableObject
 {
     public int CurrentLives;
     public int CurrentLevel;
-    public Color32 LevelColor;
+    public Color LevelColor;
     public int CurrentScore;
 }

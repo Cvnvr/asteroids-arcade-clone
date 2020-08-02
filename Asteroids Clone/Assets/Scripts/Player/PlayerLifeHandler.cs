@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerLifeHandler : Singleton<PlayerLifeHandler>
+public class PlayerLifeHandler : MonoBehaviour
 {
     #region Variables
     [Header("Script References")]
@@ -56,11 +57,17 @@ public class PlayerLifeHandler : Singleton<PlayerLifeHandler>
 
         player.transform.position = Vector3.zero;
         player.transform.rotation = Quaternion.identity;
+
+        // Subscribe to the player damage event
+        player.GetComponent<ShipMovementController>().onPlayerTakeDamage += TakeDamage;
     }
 
     #region Player Death
     public void TakeDamage()
     {
+        // Unsubscribe before the player is destroyed
+        player.GetComponent<ShipMovementController>().onPlayerTakeDamage -= TakeDamage;
+
         // Destroy the player
         Destroy(player.gameObject);
         playerExplosion.Play();

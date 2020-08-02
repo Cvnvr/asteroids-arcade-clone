@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3881529600196382040}
   - component: {fileID: 207827713044324795}
   - component: {fileID: 6192079856889646796}
+  - component: {fileID: 114597426526592922}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Projectile
@@ -133,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireSound: {fileID: 6192079856889646796}
-  lifeSpan: 2
+  lifeSpan: 0.75
 --- !u!82 &6192079856889646796
 AudioSource:
   m_ObjectHideFlags: 0
@@ -230,3 +231,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &114597426526592922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3619831498308592543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee15b33b4561124ca0831f8adfbd72c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
