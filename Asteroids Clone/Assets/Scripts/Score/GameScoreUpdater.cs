@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class ScoreUpdater : Singleton<ScoreUpdater>
+public class GameScoreUpdater : Singleton<GameScoreUpdater>
 {
     #region Variables
     [SerializeField] private LevelInformation levelInformation;

@@ -64,11 +64,6 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     }
     #endregion Variables
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
     private void OnApplicationQuit()
     {
         applicationIsQuitting = true;

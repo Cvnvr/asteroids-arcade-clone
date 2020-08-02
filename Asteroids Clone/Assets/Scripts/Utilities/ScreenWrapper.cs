@@ -5,13 +5,13 @@ using UnityEngine;
 public class ScreenWrapper : MonoBehaviour
 {
     #region Variables
-    private ScreenBoundsHandler screenBoundsHandler;
+    private ScreenBoundsCalculator screenBoundsHandler;
     #endregion Variables
 
     #region Initialisation
     private void Start()
     {
-        screenBoundsHandler = ScreenBoundsHandler.Instance;
+        screenBoundsHandler = ScreenBoundsCalculator.Instance;
     }
     #endregion Initialisation
 

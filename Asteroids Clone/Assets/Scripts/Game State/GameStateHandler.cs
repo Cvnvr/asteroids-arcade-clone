@@ -27,16 +27,16 @@ public class GameStateHandler : Singleton<GameStateHandler>
         switch (gameState)
         {
             case GameState.Intro:
-                OnSetIntroState?.Invoke();
+                OnSetIntroState.Invoke();
                 break;
             case GameState.MainMenu:
-                OnSetMenuState?.Invoke();
+                OnSetMenuState.Invoke();
                 break;
             case GameState.Game:
-                OnSetGameState?.Invoke();
+                OnSetGameState.Invoke();
                 break;
             case GameState.GameOver:
-                OnSetGameOverState?.Invoke();
+                OnSetGameOverState.Invoke();
                 break;
         }
     }

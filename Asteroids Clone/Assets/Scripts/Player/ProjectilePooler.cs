@@ -17,9 +17,6 @@ public class ProjectilePooler : Singleton<ProjectilePooler>
     public string DefaultProjectileTag { get => defaultProjectile.tag; }
 
     private Dictionary<string, Queue<Projectile>> poolDictionary;
-
-    // TODO update this
-    private Color playerColor = Color.yellow;
     #endregion Variables
 
     #region Initialisation
@@ -39,8 +36,6 @@ public class ProjectilePooler : Singleton<ProjectilePooler>
         {
             Projectile obj = Instantiate(pool.prefab, pool.parent, true);
             obj.gameObject.SetActive(false);
-
-            obj.GetComponent<SpriteRenderer>().color = playerColor;
 
             objectPool.Enqueue(obj);
         }

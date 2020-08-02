@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScreenBoundsHandler : Singleton<ScreenBoundsHandler>
+public class ScreenBoundsCalculator : Singleton<ScreenBoundsCalculator>
 {
     #region Variables
     private Vector2 screenBounds;

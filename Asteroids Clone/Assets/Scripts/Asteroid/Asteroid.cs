@@ -77,6 +77,6 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
 
     public void GiveScore()
     {
-        ScoreUpdater.Instance.UpdateScore(score);
+        GameScoreUpdater.Instance.UpdateScore(score);
     }
 }
