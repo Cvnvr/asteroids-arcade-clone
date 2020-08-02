@@ -113,4 +113,22 @@ public class AsteroidPooler : MonoBehaviour
 
         poolDictionary[tag].Enqueue(asteroid);
     }
+
+    public void ReturnAllObjectsToPool()
+    {
+        for (int i = 0; i < largePool.parent.childCount; i++)
+        {
+            ReturnToPool(largePool.tag, largePool.parent.GetChild(i).GetComponent<Asteroid>());
+        }
+
+        for (int i = 0; i < mediumPool.parent.childCount; i++)
+        {
+            ReturnToPool(mediumPool.tag, mediumPool.parent.GetChild(i).GetComponent<Asteroid>());
+        }
+
+        for (int i = 0; i < smallPool.parent.childCount; i++)
+        {
+            ReturnToPool(smallPool.tag, smallPool.parent.GetChild(i).GetComponent<Asteroid>());
+        }
+    }
 }

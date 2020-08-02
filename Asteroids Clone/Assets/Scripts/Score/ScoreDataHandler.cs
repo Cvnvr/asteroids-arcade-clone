@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ public class ScoreDataHandler : MonoBehaviour
     private readonly string fileExtension = ".json";
     private string TotalPath { get => $"{Application.streamingAssetsPath}/{fileName}{fileExtension}"; }
 
-    [HideInInspector] public ScoreList highScores;
+    public ScoreList highScores { get; private set; }
     private readonly int maxHighscoreCount = 10;
     #endregion Variables
 

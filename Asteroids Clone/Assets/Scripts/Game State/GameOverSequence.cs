@@ -40,34 +40,18 @@ public class GameOverSequence : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         // Lerp CanvasGroup on
-        StartCoroutine(FadeCanvas(containerCG, 0, 1, 2.5f));
+        yield return StartCoroutine(CanvasGroupFader.FadeCanvas(containerCG, 0, 1, 2.5f));
 
-        // todo validate whether score beat a high score
-    }
+        yield return new WaitForSeconds(2f);
 
-    private IEnumerator FadeCanvas(CanvasGroup canvas, float startAlpha, float endAlpha, float duration)
-    {
-        float startTime = Time.time;
-        float endTime = Time.time + duration;
-        float elapsedTime = 0f;
-
-        canvas.alpha = startAlpha;
-
-        while (Time.time <= endTime)
+        // Validate whether the player beat a current high score
+        if (GameScoreUpdater.Instance.ValidateHighScore())
         {
-            elapsedTime = Time.time - startTime;
-            var percentage = 1 / (duration / elapsedTime);
-            if (startAlpha > endAlpha)
-            {
-                canvas.alpha = startAlpha - percentage;
-            }
-            else
-            {
-                canvas.alpha = startAlpha + percentage;
-            }
-
-            yield return new WaitForEndOfFrame();
+            menuStateHandler.DisplayNewHighScoreContainer();
         }
-        canvas.alpha = endAlpha;
+        else
+        {
+            menuStateHandler.DisplayNoNewHighScoreContainer();
+        }
     }
 }

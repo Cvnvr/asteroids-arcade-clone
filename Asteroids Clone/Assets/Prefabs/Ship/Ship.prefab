@@ -4929,8 +4929,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ada9d2510e03a4e4bbb348f39c266e55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireDelay: 0.2
-  projectileSpeed: 10
+  fireDelay: 0.25
+  projectileSpeed: 8
 --- !u!114 &4531399634649126211
 MonoBehaviour:
   m_ObjectHideFlags: 0

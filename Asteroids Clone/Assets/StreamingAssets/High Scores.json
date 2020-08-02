@@ -1,3 +1,12 @@
 {
-    "scores": []
+    "scores": [
+        {
+            "score": 12800,
+            "tag": "Con"
+        },
+        {
+            "score": 249800,
+            "tag": "Sam"
+        }
+    ]
 }

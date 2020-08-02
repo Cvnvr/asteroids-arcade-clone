@@ -32,6 +32,23 @@ public class AsteroidSpawner : MonoBehaviour
     }
     #endregion Initialisation
 
+    #region Event Subscription
+    private void OnEnable()
+    {
+        GameStateHandler.OnSetGameOverState += DisableAllAsteroids;
+    }
+
+    private void OnDisable()
+    {
+        GameStateHandler.OnSetGameOverState -= DisableAllAsteroids;
+    }
+    #endregion Event Subscription
+
+    public void DisableAllAsteroids()
+    {
+        asteroidPooler.ReturnAllObjectsToPool();
+    }
+
     public void EnableNewBatchOfLargeAsteroids()
     {
         int[] spawnIndecies = GetSpawnLocations();
