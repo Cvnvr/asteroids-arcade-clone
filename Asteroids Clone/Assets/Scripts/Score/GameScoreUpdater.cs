@@ -56,7 +56,7 @@ public class GameScoreUpdater : Singleton<GameScoreUpdater>
     public bool ValidateHighScore()
     {
         // If no high scores exist, the player automatically gets added
-        if (dataHandler.highScores.scores.Count == 0)
+        if (dataHandler.highScores.scores.Count < 10)
         {
             return true;
         }

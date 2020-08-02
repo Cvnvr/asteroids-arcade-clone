@@ -38,6 +38,8 @@ public class LevelManager : MonoBehaviour
         // Increment the current level
         levelInformation.CurrentLevel++;
 
+        DetermineIfDifficultyShouldIncrease();
+
         // Randomise the colour of the astroids each level
         if (levelInformation.CurrentLevel == 1)
         {
@@ -55,5 +57,14 @@ public class LevelManager : MonoBehaviour
 
         // Update in-game level label
         levelLabel.text = levelInformation.CurrentLevel.ToString();
+    }
+
+    private void DetermineIfDifficultyShouldIncrease()
+    {
+        // Increase the number of spawned large asteroids every 2 levels
+        if (levelInformation.CurrentLevel % 2 == 0)
+        {
+            asteroidSpawner.IncreaseNumberOfAsteroids();
+        }
     }
 }

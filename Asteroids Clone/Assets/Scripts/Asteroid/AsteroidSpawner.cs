@@ -18,8 +18,10 @@ public class AsteroidSpawner : MonoBehaviour
     [Header("Spawn Locations")]
     [SerializeField] private List<Transform> spawnerLocations;
 
-    private readonly int largeAsteroidSpawnCount = 5;
-    private readonly int asteroidSplitCount = 2;
+    private int largeAsteroidSpawnCount;
+    private int defaultAsteroidSpawnCount = 5;
+
+    private int asteroidSplitCount = 2;
 
     [Header("Explosion SFX")]
     [SerializeField] private AudioSource explosion;
@@ -29,6 +31,11 @@ public class AsteroidSpawner : MonoBehaviour
     private void Awake()
     {
         asteroidPooler = GetComponent<AsteroidPooler>();
+    }
+
+    private void Start()
+    {
+        largeAsteroidSpawnCount = defaultAsteroidSpawnCount;
     }
     #endregion Initialisation
 
@@ -43,11 +50,6 @@ public class AsteroidSpawner : MonoBehaviour
         GameStateHandler.OnSetGameOverState -= DisableAllAsteroids;
     }
     #endregion Event Subscription
-
-    public void DisableAllAsteroids()
-    {
-        asteroidPooler.ReturnAllObjectsToPool();
-    }
 
     public void EnableNewBatchOfLargeAsteroids()
     {
@@ -68,7 +70,7 @@ public class AsteroidSpawner : MonoBehaviour
                 int spawnIndex = Random.Range(0, spawnerLocations.Count - 1);
 
                 // Only produce unique values if there are enough spawn locations, otherwise just accept the index
-                if (indecies.Length < spawnerLocations.Count)
+                if (i < spawnerLocations.Count)
                 {
                     // Keep generating an index until it's unique
                     while (indecies.Contains(spawnIndex))
@@ -157,5 +159,18 @@ public class AsteroidSpawner : MonoBehaviour
             return activeCount;
         }
         #endregion Local Functions
+    }
+
+    public void DisableAllAsteroids()
+    {
+        asteroidPooler.ReturnAllObjectsToPool();
+
+        // Reset asteroid spawn count back to default
+        largeAsteroidSpawnCount = defaultAsteroidSpawnCount;
+    }
+
+    public void IncreaseNumberOfAsteroids()
+    {
+        largeAsteroidSpawnCount++;
     }
 }

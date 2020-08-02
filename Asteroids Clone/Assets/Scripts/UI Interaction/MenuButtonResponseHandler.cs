@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MenuButtonResponseHandler : MonoBehaviour
 {
@@ -11,36 +9,40 @@ public class MenuButtonResponseHandler : MonoBehaviour
     [SerializeField] private AudioSource uiInteraction;
     #endregion Variables
 
+    #region Initialisation
     private void Start()
     {
         gameStateHandler = GameStateHandler.Instance;
     }
+    #endregion Initialisation
 
     public void Play()
     {
         PlayAudioClip();
-
         gameStateHandler.SetGameState(GameState.Game);
     }
 
     public void Score()
     {
         PlayAudioClip();
-
         menuStateHandler.DisplayHighScores();
+    }
+
+    public void Controls()
+    {
+        PlayAudioClip();
+        menuStateHandler.DisplayControls();
     }
 
     public void BackToMenu()
     {
         PlayAudioClip();
-
         menuStateHandler.DisplayMenuButtons();
     }
 
     public void Quit()
     {
         PlayAudioClip();
-
         Application.Quit();
     }
 

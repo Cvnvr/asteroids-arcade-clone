@@ -1,12 +1,32 @@
 {
     "scores": [
         {
+            "score": 249800,
+            "tag": "Sam"
+        },
+        {
+            "score": 13180,
+            "tag": "Con"
+        },
+        {
             "score": 12800,
             "tag": "Con"
         },
         {
-            "score": 249800,
-            "tag": "Sam"
+            "score": 2600,
+            "tag": "Jak"
+        },
+        {
+            "score": 1850,
+            "tag": "Con"
+        },
+        {
+            "score": 1000,
+            "tag": "Tag"
+        },
+        {
+            "score": 760,
+            "tag": "Con"
         }
     ]
 }

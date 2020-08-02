@@ -57,8 +57,6 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, ISc
 
     public virtual void TakeDamage()
     {
-        // TODO add particle effects
-
         GiveScore();
     }
 

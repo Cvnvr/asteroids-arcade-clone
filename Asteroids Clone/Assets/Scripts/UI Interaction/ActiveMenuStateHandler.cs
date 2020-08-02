@@ -15,6 +15,7 @@ public class ActiveMenuStateHandler : MonoBehaviour
     [Header("Main Menu Containers")]
     [SerializeField] private GameObject menuButtonsContainer;
     [SerializeField] private GameObject highScoresContainer;
+    [SerializeField] private GameObject controlsContainer;
 
     [Header("Score Containers")]
     [SerializeField] private GameObject gameOverContainer;
@@ -102,6 +103,13 @@ public class ActiveMenuStateHandler : MonoBehaviour
     {
         menuButtonsContainer.SetActive(true);
         highScoresContainer.SetActive(false);
+        controlsContainer.SetActive(false);
+    }
+
+    public void DisplayControls()
+    {
+        menuButtonsContainer.SetActive(false);
+        controlsContainer.SetActive(true);
     }
     #endregion Menu Containers
 
