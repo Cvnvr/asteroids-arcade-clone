@@ -7,16 +7,21 @@ using UnityEngine;
 ///     when destroyed by the player.
 /// </summary>
 [RequireComponent(typeof(AsteroidPooler))]
-public class AsteroidSpawner : Singleton<AsteroidSpawner>
+public class AsteroidSpawner : MonoBehaviour
 {
     #region Variables
     private AsteroidPooler asteroidPooler;
 
+    [Header("Script References")]
+    [SerializeField] private LevelManager levelManager;
+
+    [Header("Spawn Locations")]
     [SerializeField] private List<Transform> spawnerLocations;
 
     private readonly int largeAsteroidSpawnCount = 5;
     private readonly int asteroidSplitCount = 2;
 
+    [Header("Explosion SFX")]
     [SerializeField] private AudioSource explosion;
     #endregion Variables
 
@@ -33,7 +38,7 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
         for (int i = 0; i < largeAsteroidSpawnCount; i++)
         {
             asteroidPooler.SpawnFromPool(asteroidPooler.LargePoolTag,
-                spawnerLocations[spawnIndecies[i]].localPosition, LevelManager.Instance.LevelColor);
+                spawnerLocations[spawnIndecies[i]].localPosition, levelManager.LevelColor);
         }
 
         #region Local Functions
@@ -67,7 +72,7 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
     {
         for (int i = 0; i < asteroidSplitCount; i++)
         {
-            asteroidPooler.SpawnFromPool(asteroidPooler.MediumPoolTag, asteroid.transform.position, LevelManager.Instance.LevelColor);
+            asteroidPooler.SpawnFromPool(asteroidPooler.MediumPoolTag, asteroid.transform.position, levelManager.LevelColor);
         }
 
         // Return 'destroyed' asteroid to the pool
@@ -80,7 +85,7 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
     {
         for (int i = 0; i < asteroidSplitCount; i++)
         {
-            asteroidPooler.SpawnFromPool(asteroidPooler.SmallPoolTag, asteroid.transform.position, LevelManager.Instance.LevelColor);
+            asteroidPooler.SpawnFromPool(asteroidPooler.SmallPoolTag, asteroid.transform.position, levelManager.LevelColor);
         }
 
         // Return 'destroyed' asteroid to the pool
@@ -95,13 +100,15 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
         asteroidPooler.ReturnToPool(asteroidPooler.SmallPoolTag, asteroid);
 
         explosion.Play();
+
+        ValidateRemainingAsteroids();
     }
 
-    public void ValidateRemainingAsteroids()
+    private void ValidateRemainingAsteroids()
     {
         if (AreAsteroidsStillThere())
         {
-            LevelManager.Instance.GoToNextLevel();
+            levelManager.GoToNextLevel();
         }
     }
 

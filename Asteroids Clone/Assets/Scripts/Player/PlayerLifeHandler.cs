@@ -6,7 +6,8 @@ public class PlayerLifeHandler : Singleton<PlayerLifeHandler>
 {
     #region Variables
     [Header("Script References")]
-    [SerializeField] private GameUiHandler uiHandler;
+    private GameStateHandler gameStateHandler;
+    [SerializeField] private LevelInformation levelInformation;
 
     [Header("Player References")]
     [SerializeField] private GameObject playerPrefab;
@@ -16,21 +17,35 @@ public class PlayerLifeHandler : Singleton<PlayerLifeHandler>
     [SerializeField] private AudioSource playerExplosion;
 
     private readonly int maxPlayerLives = 3;
-    private int currentPlayerLives;
-
     private readonly float tempInvincibilityTimer = 2f;
+
+    [SerializeField] private List<GameObject> lifeSprites;
     #endregion Variables
 
+    #region Initialisation
     private void Start()
     {
-        InitialisePlayerState();
+        gameStateHandler = GameStateHandler.Instance;
     }
+    #endregion Initialisation
+
+    #region Event Subscriptions
+    private void OnEnable()
+    {
+        GameStateHandler.OnSetGameState += InitialisePlayerState;
+    }
+
+    private void OnDisable()
+    {
+        GameStateHandler.OnSetGameState -= InitialisePlayerState;
+    }
+    #endregion Event Subscriptions
 
     public void InitialisePlayerState()
     {
         // Reset player lives back to default
-        currentPlayerLives = maxPlayerLives;
-        uiHandler.UpdateLifeSprites(currentPlayerLives);
+        levelInformation.CurrentLives = maxPlayerLives;
+        UpdateLifeSprites();
 
         SpawnPlayer();
     }
@@ -51,20 +66,18 @@ public class PlayerLifeHandler : Singleton<PlayerLifeHandler>
         playerExplosion.Play();
 
         // Update lives counter
-        currentPlayerLives -= 1;
+        levelInformation.CurrentLives -= 1;
+        UpdateLifeSprites();
 
-        if (currentPlayerLives >= 1)
+        if (levelInformation.CurrentLives >= 1)
         {
             // Respawn the player if they still have some lives left
             Invoke("RespawnPlayerAfterDeath", 1f);
         }
         else
         {
-            // todo game over
-            // todo play game over sound with menu
+            gameStateHandler.SetGameState(GameState.GameOver);
         }
-
-        uiHandler.UpdateLifeSprites(currentPlayerLives);
     }
 
     private void RespawnPlayerAfterDeath()
@@ -115,4 +128,27 @@ public class PlayerLifeHandler : Singleton<PlayerLifeHandler>
         #endregion Local Functions
     }
     #endregion Player Death
+
+    private void UpdateLifeSprites()
+    {
+        // Disable all life sprites
+        for (int i = 0; i < lifeSprites.Count; i++)
+        {
+            lifeSprites[i].SetActive(false);
+        }
+
+        if (levelInformation.CurrentLives == 0)
+        {
+            return;
+        }
+
+        // Enable remaining lives
+        for (int i = 0; i < levelInformation.CurrentLives; i++)
+        {
+            if (i < lifeSprites.Count)
+            {
+                lifeSprites[i].SetActive(true);
+            }
+        }
+    }
 }

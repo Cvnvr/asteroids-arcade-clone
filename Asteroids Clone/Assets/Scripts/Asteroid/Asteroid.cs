@@ -4,10 +4,10 @@
 public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEnemy, IScoreGiver
 {
     #region Variables
-    private Rigidbody2D rigidbody;
+    protected AsteroidSpawner asteroidSpawner;
 
+    private Rigidbody2D rigidbody;
     [SerializeField] private float speed = 1f;
-    private Vector2 movementDirection;
 
     [SerializeField] private int score = 100;
     #endregion Variables
@@ -19,6 +19,11 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
 
         // Ignore collision with other Asteroids (layer 8 = "Asteroids")
         Physics2D.IgnoreLayerCollision(8, 8);
+    }
+
+    public void InitialiseAsteroid(AsteroidSpawner spawner)
+    {
+        asteroidSpawner = spawner;
     }
     #endregion Initialisation
 
@@ -72,6 +77,6 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IEn
 
     public void GiveScore()
     {
-        ScoreTracker.Instance.UpdateScore(score);
+        ScoreUpdater.Instance.UpdateScore(score);
     }
 }

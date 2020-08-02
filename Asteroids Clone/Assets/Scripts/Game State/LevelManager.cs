@@ -1,38 +1,48 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Dynamic;
+﻿using TMPro;
 using UnityEngine;
 
-public class LevelManager : Singleton<LevelManager>
+public class LevelManager : MonoBehaviour
 {
     #region Variables
-    [SerializeField] private GameUiHandler uiHandler;
+    [SerializeField] private AsteroidSpawner asteroidSpawner;
+    [SerializeField] private LevelInformation levelInformation;
 
-    private int currentLevel = 1;
+    public delegate void OnLevelChangeHandler();
+    public static event OnLevelChangeHandler OnLevelChange;
 
-    public Color32 LevelColor { get; private set; }
+    public Color32 LevelColor { get => levelInformation.LevelColor; }
+
+    [SerializeField] private TMP_Text levelLabel;
     #endregion Variables
 
-    private void Start()
+    #region Event Subscriptions
+    private void OnEnable()
     {
-        InitialiseFirstLevelState();
+        GameStateHandler.OnSetGameState += InitialiseFirstLevelState;
     }
+
+    private void OnDisable()
+    {
+        GameStateHandler.OnSetGameState -= InitialiseFirstLevelState;
+    }
+    #endregion Event Subscriptions
 
     public void InitialiseFirstLevelState()
     {
-        currentLevel = 0;
+        levelInformation.CurrentLevel = 0;
         GoToNextLevel();
     }
 
     public void GoToNextLevel()
     {
-        currentLevel++;
-        uiHandler.UpdateLevel(currentLevel);
+        levelInformation.CurrentLevel++;
 
         // Randomise the colour of the astroids each level
-        LevelColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+        levelInformation.LevelColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
 
         // Spawn next set of asteroids
-        AsteroidSpawner.Instance.EnableNewBatchOfLargeAsteroids();
+        asteroidSpawner.EnableNewBatchOfLargeAsteroids();
+
+        levelLabel.text = levelInformation.CurrentLevel.ToString();
     }
 }

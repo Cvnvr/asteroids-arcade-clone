@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Responsible for pooling the asteroids
+/// </summary>
 public class AsteroidPooler : MonoBehaviour
 {
     [System.Serializable]
@@ -14,6 +17,8 @@ public class AsteroidPooler : MonoBehaviour
     }
 
     #region Variables
+    private AsteroidSpawner asteroidSpawner;
+
     [SerializeField] private AsteroidPool largePool;
     [SerializeField] private AsteroidPool mediumPool;
     [SerializeField] private AsteroidPool smallPool;
@@ -33,6 +38,8 @@ public class AsteroidPooler : MonoBehaviour
     #region Initialisation
     private void Awake()
     {
+        asteroidSpawner = GetComponent<AsteroidSpawner>();
+
         poolDictionary = new Dictionary<string, Queue<Asteroid>>();
 
         // Initialise each of the asteroid size pools
@@ -51,6 +58,8 @@ public class AsteroidPooler : MonoBehaviour
             // Instantiate the object and add it to the queue
             Asteroid obj = Instantiate(pool.prefab, pool.parent, true);
             obj.gameObject.SetActive(false);
+
+            obj.GetComponent<Asteroid>().InitialiseAsteroid(asteroidSpawner);
 
             if (pool.sprites.Count == 0)
             {

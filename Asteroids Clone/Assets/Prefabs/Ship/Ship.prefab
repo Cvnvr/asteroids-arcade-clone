@@ -4903,7 +4903,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forwardThrust: 1150
   maxSpeed: 10
-  rotationalThrust: 65
+  rotationalThrust: 80
   maxRotationalSpeed: 1
 --- !u!114 &1236633525554146371
 MonoBehaviour:

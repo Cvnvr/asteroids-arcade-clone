@@ -7,7 +7,7 @@ public class LargeAsteroid : Asteroid
     public override void TakeDamage()
     {
         // Split large asteroid into specified number of medium sized asteroids
-        AsteroidSpawner.Instance.SplitLargeAsteroid(this);
+        asteroidSpawner.SplitLargeAsteroid(this);
 
         base.TakeDamage();
     }
