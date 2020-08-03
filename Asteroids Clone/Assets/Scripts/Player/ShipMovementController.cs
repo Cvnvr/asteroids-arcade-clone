@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Handles the player movement
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class ShipMovementController : MonoBehaviour, IMoveable
 {
@@ -29,9 +32,11 @@ public class ShipMovementController : MonoBehaviour, IMoveable
 
     private void Update()
     {
+        // Retrieves input values from player
         forwardInput = PlayerInputHandler.GetForwardInput();
         rotationalInput = PlayerInputHandler.GetRotationalInput();
 
+        // Applies clamped velocity to ensure player doesn't exceed max speed
         rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, maxSpeed);
     }
 
@@ -52,6 +57,7 @@ public class ShipMovementController : MonoBehaviour, IMoveable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Kill the player if they collide with an asteroid
         if (collision.gameObject.CompareTag("Asteroid"))
         {
             onPlayerTakeDamage.Invoke();

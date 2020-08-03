@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Base class for the Asteroid objects.
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IScoreGiver
 {
     #region Variables
     protected AsteroidSpawner asteroidSpawner;
 
-    private Rigidbody2D rigidbody;
+    // Each asteroid size has a different speed/score set in inspector
     [SerializeField] private float speed = 1f;
-
     [SerializeField] private int score = 100;
+
+    private Rigidbody2D rigidbody;
     #endregion Variables
 
     #region Initialisation
@@ -21,12 +25,18 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, ISc
         Physics2D.IgnoreLayerCollision(8, 8);
     }
 
+    /// <summary>
+    /// Initialises a reference to the 'AsteroidSpawner' class
+    /// </summary>
     public void InitialiseAsteroid(AsteroidSpawner spawner)
     {
         asteroidSpawner = spawner;
     }
     #endregion Initialisation
 
+    /// <summary>
+    /// Called when spawned from the object pool
+    /// </summary>
     public void OnObjectSpawn()
     {
         // Randomise the movement direction of the asteroid to introduce variety

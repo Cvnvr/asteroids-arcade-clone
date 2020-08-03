@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Attached to objects that should be kept within the screen bounds.
+/// </summary>
 public class ScreenWrapper : MonoBehaviour
 {
     #region Variables

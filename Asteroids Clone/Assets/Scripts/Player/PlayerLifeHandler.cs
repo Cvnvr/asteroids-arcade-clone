@@ -1,26 +1,31 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles the player's life/death mechanics
+/// </summary>
 public class PlayerLifeHandler : MonoBehaviour
 {
     #region Variables
     [Header("Script References")]
     private GameStateHandler gameStateHandler;
+
+    [Header("Level Data")]
     [SerializeField] private LevelInformation levelInformation;
 
     [Header("Player References")]
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Transform playerParent;
-    private GameObject player;
-    [Space, Space]
     [SerializeField] private AudioSource playerExplosion;
 
-    private readonly int maxPlayerLives = 3;
-    private readonly float tempInvincibilityTimer = 2f;
+    private GameObject player;
 
     [SerializeField] private List<GameObject> lifeSprites;
+    private readonly int maxPlayerLives = 3;
+
+    private readonly float tempInvincibilityTimer = 2f;
+    private Coroutine spriteBlinkCoroutine;
     #endregion Variables
 
     #region Initialisation
@@ -44,17 +49,21 @@ public class PlayerLifeHandler : MonoBehaviour
 
     public void InitialisePlayerState()
     {
-        // Reset player lives back to default
+        // Resets player lives back to default
         levelInformation.CurrentLives = maxPlayerLives;
         UpdateLifeSprites();
 
         SpawnPlayer();
     }
 
+    /// <summary>
+    /// Instantiates the player into the level
+    /// </summary>
     private void SpawnPlayer()
     {
         player = Instantiate(playerPrefab, playerParent, true);
 
+        // Initialise the player's position and rotation to the center of the game
         player.transform.position = Vector3.zero;
         player.transform.rotation = Quaternion.identity;
 
@@ -63,9 +72,12 @@ public class PlayerLifeHandler : MonoBehaviour
     }
 
     #region Player Death
+    /// <summary>
+    /// Called via event when the player collides with an asteroid
+    /// </summary>
     public void TakeDamage()
     {
-        // Unsubscribe before the player is destroyed
+        // Unsubscribe to the event before the player is destroyed
         player.GetComponent<ShipMovementController>().onPlayerTakeDamage -= TakeDamage;
 
         // Destroy the player
@@ -87,6 +99,9 @@ public class PlayerLifeHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Re-instantiates the player
+    /// </summary>
     private void RespawnPlayerAfterDeath()
     {
         SpawnPlayer();
@@ -95,13 +110,18 @@ public class PlayerLifeHandler : MonoBehaviour
         StartCoroutine(TriggerTemporaryInvincibility());
     }
 
+    /// <summary>
+    /// Provides the player with temporary invincibility after spawning
+    /// </summary>
     private IEnumerator TriggerTemporaryInvincibility()
     {
+        // Disable player functionality while invicible
         TogglePlayerControls(false);
-        Coroutine spriteBlinkCoroutine = StartCoroutine(MakeSpriteBlink());
+        spriteBlinkCoroutine = StartCoroutine(MakeSpriteBlink());
 
         yield return new WaitForSeconds(tempInvincibilityTimer);
 
+        // Re-enable player functionality after invicibility ends
         TogglePlayerControls(true);
         StopCoroutine(spriteBlinkCoroutine);
 
@@ -136,6 +156,9 @@ public class PlayerLifeHandler : MonoBehaviour
     }
     #endregion Player Death
 
+    /// <summary>
+    /// Updates the UI life sprites with the corresponding life count
+    /// </summary>
     private void UpdateLifeSprites()
     {
         // Disable all life sprites

@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
+/// <summary>
+/// Handles the reading/writing of score data to the json file
+/// </summary>
 [RequireComponent(typeof(MenuScoreUpdater))]
 public class ScoreDataHandler : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class ScoreDataHandler : MonoBehaviour
     private readonly string fileExtension = ".json";
     private string TotalPath { get => $"{Application.streamingAssetsPath}/{fileName}{fileExtension}"; }
 
+    // Object list of high scores managed throughout the game
     public ScoreList highScores { get; private set; }
     private readonly int maxHighscoreCount = 10;
     #endregion Variables
@@ -27,10 +29,12 @@ public class ScoreDataHandler : MonoBehaviour
 
     private async void Start()
     {
+        // Ensure the data reading finishes before trying to access the object list
         await ReadScoreData();
 
         SortHighScoresByValue();
 
+        // Update the score UI
         menuScoreUpdater.UpdateHighScoresUI();
     }
 
@@ -60,14 +64,24 @@ public class ScoreDataHandler : MonoBehaviour
     }
     #endregion Initialisation
 
+    /// <summary>
+    /// Called if the player has a new high score when they lose the game.
+    /// </summary>
     public void AddToHighscore(Score score)
     {
+        // Add the score to the object list
         highScores.scores.Add(score);
+
+        // Sort it in desc value
         SortHighScoresByValue();
 
+        // Remove values at the bottom that exceed the max count
         TrimNumberOfHighScores();
+
+        // Write the new high scores back to the file
         WriteToFile();
 
+        // Update the UI again
         menuScoreUpdater.UpdateHighScoresUI();
 
         #region Local Functions
@@ -76,7 +90,7 @@ public class ScoreDataHandler : MonoBehaviour
             // Only keep track of a certain amount of scores
             if (highScores.scores.Count > maxHighscoreCount)
             {
-                for (int i = highScores.scores.Count; i > maxHighscoreCount; i--)
+                for (int i = highScores.scores.Count - 1; i >= maxHighscoreCount; i--)
                 {
                     highScores.scores.RemoveAt(i);
                 }
@@ -92,9 +106,11 @@ public class ScoreDataHandler : MonoBehaviour
             return;
         }
 
+        // Sorts the high scores according to their 'score' in descending value
         highScores.scores = highScores.scores.OrderByDescending(item => item.score).ToList();
     }
 
+    // Writes the object data back to the json file
     private void WriteToFile()
     {
         string jsonString = JsonUtility.ToJson(highScores, true);

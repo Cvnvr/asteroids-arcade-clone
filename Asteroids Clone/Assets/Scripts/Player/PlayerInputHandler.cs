@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Handles player input and returns necessary value.
+/// </summary>
 public static class PlayerInputHandler
 {
     public static float GetForwardInput()

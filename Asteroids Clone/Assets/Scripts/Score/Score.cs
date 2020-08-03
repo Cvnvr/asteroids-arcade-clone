@@ -12,11 +12,16 @@ public class ScoreList
     public List<Score> scores;
 }
 
+/// <summary>
+/// Basic data class to handle the score information.
+/// </summary>
 [Serializable]
 public class Score
 {
+    #region Variables
     public int score;
     public string tag;
+    #endregion Variables
 
     public Score(int score, string tag)
     {

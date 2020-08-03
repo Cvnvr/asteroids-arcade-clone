@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Handles which UI screen is displayed at any time.
+/// </summary>
 public class ActiveMenuStateHandler : MonoBehaviour
 {
     #region Variables
@@ -41,6 +44,7 @@ public class ActiveMenuStateHandler : MonoBehaviour
     }
     #endregion Event Subscriptions
 
+    #region Active UI Screen Switches
     public void DisplayIntroScreen()
     {
         titleContainer.SetActive(true);
@@ -69,6 +73,9 @@ public class ActiveMenuStateHandler : MonoBehaviour
         DisplayGameOver();
     }
 
+    /// <summary>
+    /// Sets the object passed to be active and the rest inactive
+    /// </summary>
     private void ToggleActiveMenu(GameObject screen)
     {
         if (introScreen != null)
@@ -91,8 +98,9 @@ public class ActiveMenuStateHandler : MonoBehaviour
             scoreScreen.SetActive(scoreScreen == screen ? true : false);
         }
     }
+    #endregion Active UI Screen Switches
 
-    #region Menu Containers
+    #region Menu Container Updates
     public void DisplayHighScores()
     {
         menuButtonsContainer.SetActive(false);
@@ -111,9 +119,9 @@ public class ActiveMenuStateHandler : MonoBehaviour
         menuButtonsContainer.SetActive(false);
         controlsContainer.SetActive(true);
     }
-    #endregion Menu Containers
+    #endregion Menu Container Updates
 
-    #region Game Over Containers
+    #region Game Over Container Updates
     public void DisplayGameOver()
     {
         gameOverContainer.SetActive(true);
@@ -134,5 +142,5 @@ public class ActiveMenuStateHandler : MonoBehaviour
         noNewHighScoreContainer.SetActive(false);
         newHighScoreContainer.SetActive(true);
     }
-    #endregion Game Over Containers
+    #endregion Game Over Container Updates
 }

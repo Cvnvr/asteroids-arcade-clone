@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Generic class to handle singleton instances behaviour.
+/// </summary>
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     #region Variables
@@ -50,9 +53,6 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                         instance = singletonObject.AddComponent<T>();
 
                         singletonObject.name = typeof(T).ToString() + " (Singleton)";
-
-                        // Make instance persistent.
-                        DontDestroyOnLoad(singletonObject);
 
                         Debug.Log($"[Singleton] An instance of {typeof(T)} is needed in the scene, so '{singletonObject}' was created with DontDestroyOnLoad.");
                     }

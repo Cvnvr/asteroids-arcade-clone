@@ -1,15 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles updating the high score UI elements in the main menu.
+/// </summary>
 [RequireComponent(typeof(ScoreDataHandler))]
 public class MenuScoreUpdater : MonoBehaviour
 {
     #region Variables
     private ScoreDataHandler dataHandler;
 
+    [Header("UI References")]
+    // Score containers in the main menu
     [SerializeField] private List<ScoreUIElement> scoreUIElements;
-
+    [Space, Space]
+    // Two different contaiers displayed depending on whether any high scores exist
     [SerializeField] private GameObject noScoresLabel;
     [SerializeField] private GameObject highScoresContainer;
     #endregion Variables
@@ -25,6 +30,7 @@ public class MenuScoreUpdater : MonoBehaviour
     {
         if (dataHandler.highScores.scores.Count == 0)
         {
+            // Displays the "No high scores" message
             DisplayScoreList(false);
             return;
         }
@@ -41,6 +47,7 @@ public class MenuScoreUpdater : MonoBehaviour
             scoreUIElements[i].gameObject.SetActive(true);
         }
 
+        // Displays the list of high scores if there is data
         DisplayScoreList(true);
 
         #region Local Functions

@@ -2,11 +2,16 @@
 
 public delegate void OnStateChangeHandler();
 
+/// <summary>
+/// Manages the current state of the game.
+/// </summary>
 public class GameStateHandler : Singleton<GameStateHandler>
 {
     #region Variables
+    // Enum to manage the game state
     public GameState gameState { get; private set; }
 
+    // Declared events for each of the different game states
     public static event OnStateChangeHandler OnSetIntroState;
     public static event OnStateChangeHandler OnSetMenuState;
     public static event OnStateChangeHandler OnSetGameState;
@@ -20,6 +25,9 @@ public class GameStateHandler : Singleton<GameStateHandler>
     }
     #endregion Initialisation
 
+    /// <summary>
+    /// Fires the corresponding event after the state of the game changes.
+    /// </summary>
     public void SetGameState(GameState state)
     {
         gameState = state;

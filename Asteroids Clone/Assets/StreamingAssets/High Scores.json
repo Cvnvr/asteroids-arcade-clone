@@ -1,7 +1,7 @@
 {
     "scores": [
         {
-            "score": 249800,
+            "score": 24980,
             "tag": "Sam"
         },
         {
@@ -13,20 +13,32 @@
             "tag": "Con"
         },
         {
-            "score": 2600,
-            "tag": "Jak"
+            "score": 3630,
+            "tag": "Eth"
         },
         {
-            "score": 1850,
-            "tag": "Con"
+            "score": 3620,
+            "tag": "Lol"
         },
         {
-            "score": 1000,
+            "score": 3050,
+            "tag": "Eth"
+        },
+        {
+            "score": 2910,
+            "tag": "Eth"
+        },
+        {
+            "score": 2730,
+            "tag": "Jef"
+        },
+        {
+            "score": 2710,
             "tag": "Tag"
         },
         {
-            "score": 760,
-            "tag": "Con"
+            "score": 2600,
+            "tag": "Jak"
         }
     ]
 }

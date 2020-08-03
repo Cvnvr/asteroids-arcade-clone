@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Generates colors for the asteroids.
-/// </summary>
 public static class ColorGenerator
 {
     /// <summary>

@@ -2,6 +2,7 @@
 using UnityEngine;
 
 /// <summary>
+/// Sits on the score UI containers.
 /// Used to initialise the text labels of each of the score UI elements.
 /// </summary>
 public class ScoreUIElement : MonoBehaviour

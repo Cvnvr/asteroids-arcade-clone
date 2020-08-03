@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Handles all of the function calls from the main menu UI buttons.
+/// </summary>
 public class MenuButtonResponseHandler : MonoBehaviour
 {
     #region Variables
+    [Header("Script References")]
     private GameStateHandler gameStateHandler;
     [SerializeField] private ActiveMenuStateHandler menuStateHandler;
 

@@ -10,9 +10,8 @@ using UnityEngine;
 public class AsteroidSpawner : MonoBehaviour
 {
     #region Variables
-    private AsteroidPooler asteroidPooler;
-
     [Header("Script References")]
+    private AsteroidPooler asteroidPooler;
     [SerializeField] private LevelManager levelManager;
 
     [Header("Spawn Locations")]
@@ -35,6 +34,7 @@ public class AsteroidSpawner : MonoBehaviour
 
     private void Start()
     {
+        // Initialise the spawn count variable
         largeAsteroidSpawnCount = defaultAsteroidSpawnCount;
     }
     #endregion Initialisation
@@ -51,6 +51,10 @@ public class AsteroidSpawner : MonoBehaviour
     }
     #endregion Event Subscription
 
+    /// <summary>
+    /// Called each new level.
+    /// Retrieves a new set of large asteroids from the asteroid pool.
+    /// </summary>
     public void EnableNewBatchOfLargeAsteroids()
     {
         int[] spawnIndecies = GetSpawnLocations();
@@ -61,12 +65,14 @@ public class AsteroidSpawner : MonoBehaviour
         }
 
         #region Local Functions
+        // Gets as unique as possible spawn locations from the list of spawns provided
         int[] GetSpawnLocations()
         {
             int[] indecies = new int[largeAsteroidSpawnCount];
 
             for (int i = 0; i < indecies.Length; i++)
             {
+                // Generate a random index
                 int spawnIndex = Random.Range(0, spawnerLocations.Count - 1);
 
                 // Only produce unique values if there are enough spawn locations, otherwise just accept the index
@@ -87,7 +93,10 @@ public class AsteroidSpawner : MonoBehaviour
         #endregion Local Functions
     }
 
-    public void SplitLargeAsteroid(Asteroid asteroid)
+    /// <summary>
+    /// Splits the large asteroid provided into n number of medium asteroids
+    /// </summary>
+    public void SplitLargeAsteroid(LargeAsteroid asteroid)
     {
         for (int i = 0; i < asteroidSplitCount; i++)
         {
@@ -100,7 +109,10 @@ public class AsteroidSpawner : MonoBehaviour
         explosion.Play();
     }
 
-    public void SplitMediumAsteroid(Asteroid asteroid)
+    /// <summary>
+    /// Splits the medium asteroid provided into n number of small asteroids
+    /// </summary>
+    public void SplitMediumAsteroid(MediumAsteroid asteroid)
     {
         for (int i = 0; i < asteroidSplitCount; i++)
         {
@@ -113,7 +125,10 @@ public class AsteroidSpawner : MonoBehaviour
         explosion.Play();
     }
 
-    public void DestroySmallAsteroid(Asteroid asteroid)
+    /// <summary>
+    /// Destroys the small asteroid and validates how many are remaining this level
+    /// </summary>
+    public void DestroySmallAsteroid(SmallAsteroid asteroid)
     {
         // Return 'destroyed' asteroid to the pool
         asteroidPooler.ReturnToPool(asteroidPooler.SmallPoolTag, asteroid);
@@ -125,13 +140,13 @@ public class AsteroidSpawner : MonoBehaviour
 
     private void ValidateRemainingAsteroids()
     {
-        if (AreAsteroidsStillThere())
+        if (AllAsteroidsHaveBeenDestroyed())
         {
             levelManager.GoToNextLevel();
         }
     }
 
-    private bool AreAsteroidsStillThere()
+    private bool AllAsteroidsHaveBeenDestroyed()
     {
         int largeActiveCount = ReturnActiveCount(asteroidPooler.LargeParent);
         int mediumActiveCount = ReturnActiveCount(asteroidPooler.MediumParent);
@@ -161,16 +176,22 @@ public class AsteroidSpawner : MonoBehaviour
         #endregion Local Functions
     }
 
+    /// <summary>
+    /// Called each by the level manager when the game gets harder
+    /// </summary>
+    public void IncreaseNumberOfAsteroids()
+    {
+        largeAsteroidSpawnCount++;
+    }
+
+    /// <summary>
+    /// Called when the player loses all of their lives
+    /// </summary>
     public void DisableAllAsteroids()
     {
         asteroidPooler.ReturnAllObjectsToPool();
 
         // Reset asteroid spawn count back to default
         largeAsteroidSpawnCount = defaultAsteroidSpawnCount;
-    }
-
-    public void IncreaseNumberOfAsteroids()
-    {
-        largeAsteroidSpawnCount++;
     }
 }

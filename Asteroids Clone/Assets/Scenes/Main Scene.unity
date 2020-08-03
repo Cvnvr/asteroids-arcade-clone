@@ -1376,7 +1376,7 @@ GameObject:
   - component: {fileID: 117161485}
   - component: {fileID: 117161484}
   m_Layer: 5
-  m_Name: AS (TMP)
+  m_Name: AD (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1419,7 +1419,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: a/s - Rotational thrust
+  m_text: a/d - Rotational thrust
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 43f4033a875c418489d3b24f36f418b1, type: 2}
   m_sharedMaterial: {fileID: 21341926505085838, guid: 43f4033a875c418489d3b24f36f418b1,
@@ -3955,7 +3955,7 @@ GameObject:
   m_Component:
   - component: {fileID: 715507496}
   m_Layer: 0
-  m_Name: Projectiles
+  m_Name: Projectiles Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8754,7 +8754,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1742742095}
   m_Layer: 0
-  m_Name: Large Asteroids
+  m_Name: Large Asteroids Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9176,7 +9176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1809802414}
   m_Layer: 0
-  m_Name: Small Asteroids
+  m_Name: Small Asteroids Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10456,7 +10456,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2029757230}
   m_Layer: 0
-  m_Name: Medium Asteroids
+  m_Name: Medium Asteroids Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

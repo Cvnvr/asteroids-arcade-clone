@@ -4,8 +4,12 @@ using UnityEngine;
 /// <summary>
 /// Responsible for pooling the asteroids
 /// </summary>
+[RequireComponent(typeof(AsteroidSpawner))]
 public class AsteroidPooler : MonoBehaviour
 {
+    /// <summary>
+    /// Serializable so users can define new asteroid types in future.
+    /// </summary>
     [System.Serializable]
     public class AsteroidPool
     {
@@ -19,10 +23,15 @@ public class AsteroidPooler : MonoBehaviour
     #region Variables
     private AsteroidSpawner asteroidSpawner;
 
+    // Default asteroid types
     [SerializeField] private AsteroidPool largePool;
     [SerializeField] private AsteroidPool mediumPool;
     [SerializeField] private AsteroidPool smallPool;
 
+    // This dictionary contains each of the sets of pooled asteroids after being instantiated
+    private Dictionary<string, Queue<Asteroid>> poolDictionary;
+
+    // Properties for convenience
     public string LargePoolTag { get => largePool.tag; }
     public Transform LargeParent { get => largePool.parent; }
 
@@ -31,8 +40,6 @@ public class AsteroidPooler : MonoBehaviour
 
     public string SmallPoolTag { get => smallPool.tag; }
     public Transform SmallParent { get => smallPool.parent; }
-
-    private Dictionary<string, Queue<Asteroid>> poolDictionary;
     #endregion Variables
 
     #region Initialisation
@@ -48,9 +55,20 @@ public class AsteroidPooler : MonoBehaviour
         poolDictionary.Add(smallPool.tag, InitialisePoolQueue(smallPool));
     }
 
+    /// <summary>
+    /// Initialises the queue of each pool by spawning the provided pool prefab
+    ///     the specified number of times and immediately turning each object off.
+    /// Queue is then added to the dictionary
+    /// </summary>
     private Queue<Asteroid> InitialisePoolQueue(AsteroidPool pool)
     {
         Queue<Asteroid> objectPool = new Queue<Asteroid>();
+
+        // Validates whether a prefab/parent transform were added
+        if (pool.prefab == null || pool.parent == null)
+        {
+            return objectPool;
+        }
 
         // Iterate over the specified size of the queue
         for (int i = 0; i < pool.size; i++)
@@ -103,6 +121,7 @@ public class AsteroidPooler : MonoBehaviour
 
     public void ReturnToPool(string tag, Asteroid asteroid)
     {
+        // Disable the object once again
         asteroid.gameObject.SetActive(false);
 
         if (!poolDictionary.ContainsKey(tag))
@@ -111,9 +130,14 @@ public class AsteroidPooler : MonoBehaviour
             return;
         }
 
+        // Enqueue it so it can be reused in the future
         poolDictionary[tag].Enqueue(asteroid);
     }
 
+    /// <summary>
+    /// Called when the player loses.
+    /// Returns all currently spawned objects back to the pool.
+    /// </summary>
     public void ReturnAllObjectsToPool()
     {
         for (int i = 0; i < largePool.parent.childCount; i++)

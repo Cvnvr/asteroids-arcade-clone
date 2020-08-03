@@ -31,6 +31,7 @@ public static class CanvasGroupFader
 
             yield return new WaitForEndOfFrame();
         }
+
         canvas.alpha = desiredAlpha;
     }
 }
