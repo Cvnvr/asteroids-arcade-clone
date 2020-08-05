@@ -1,6 +1,6 @@
-﻿public enum GameState { Intro, MainMenu, Game, GameOver }
+﻿using System;
 
-public delegate void OnStateChangeHandler();
+public enum GameState { Intro, MainMenu, Game, GameOver }
 
 /// <summary>
 /// Manages the current state of the game.
@@ -11,11 +11,11 @@ public class GameStateHandler : Singleton<GameStateHandler>
     // Enum to manage the game state
     public GameState gameState { get; private set; }
 
-    // Declared events for each of the different game states
-    public static event OnStateChangeHandler OnSetIntroState;
-    public static event OnStateChangeHandler OnSetMenuState;
-    public static event OnStateChangeHandler OnSetGameState;
-    public static event OnStateChangeHandler OnSetGameOverState;
+    // Events for each of the different game states
+    public static event Action OnSetIntroState;
+    public static event Action OnSetMenuState;
+    public static event Action OnSetGameState;
+    public static event Action OnSetGameOverState;
     #endregion Variables
 
     #region Initialisation
@@ -35,16 +35,16 @@ public class GameStateHandler : Singleton<GameStateHandler>
         switch (gameState)
         {
             case GameState.Intro:
-                OnSetIntroState.Invoke();
+                OnSetIntroState?.Invoke();
                 break;
             case GameState.MainMenu:
-                OnSetMenuState.Invoke();
+                OnSetMenuState?.Invoke();
                 break;
             case GameState.Game:
-                OnSetGameState.Invoke();
+                OnSetGameState?.Invoke();
                 break;
             case GameState.GameOver:
-                OnSetGameOverState.Invoke();
+                OnSetGameOverState?.Invoke();
                 break;
         }
     }

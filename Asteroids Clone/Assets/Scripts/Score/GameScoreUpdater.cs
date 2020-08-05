@@ -1,18 +1,16 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 
 /// <summary>
 /// Handles the player's score
 /// </summary>
 [RequireComponent(typeof(ScoreDataHandler))]
-public class GameScoreUpdater : Singleton<GameScoreUpdater>
+public class GameScoreUpdater : MonoBehaviour
 {
     #region Variables
     private ScoreDataHandler dataHandler;
     private GameStateHandler gameStateHandler;
-
-    [Header("Data Information")]
-    [SerializeField] private LevelInformation levelInformation;
 
     [Header("In Game Score UI")]
     [SerializeField] private TMP_Text scoreLabel;
@@ -37,19 +35,20 @@ public class GameScoreUpdater : Singleton<GameScoreUpdater>
     private void OnEnable()
     {
         GameStateHandler.OnSetGameState += InitialiseScoreState;
+        GameEvents.OnScoreGiven += UpdateScore;
     }
 
     private void OnDisable()
     {
         GameStateHandler.OnSetGameState -= InitialiseScoreState;
+        GameEvents.OnScoreGiven -= UpdateScore;
     }
     #endregion Event Subscription
 
     public void InitialiseScoreState()
     {
         // Reset the current score
-        levelInformation.CurrentScore = 0;
-        scoreLabel.text = levelInformation.CurrentScore.ToString();
+        scoreLabel.text = GameData.CurrentScore.ToString();
 
         // Ensure the tag input field is cleared each game
         tagInputField.text = "";
@@ -58,10 +57,10 @@ public class GameScoreUpdater : Singleton<GameScoreUpdater>
     /// <summary>
     /// Called each time an asteroid is destroyed to append it's given score
     /// </summary>
-    public void UpdateScore(int score)
+    private void UpdateScore(int score)
     {
-        levelInformation.CurrentScore += score;
-        scoreLabel.text = levelInformation.CurrentScore.ToString();
+        GameData.AddToScore(score);
+        scoreLabel.text = GameData.CurrentScore.ToString();
     }
 
     /// <summary>
@@ -79,7 +78,7 @@ public class GameScoreUpdater : Singleton<GameScoreUpdater>
         //     than any of the existing scores
         for (int i = 0; i < dataHandler.highScores.scores.Count; i++)
         {
-            if (levelInformation.CurrentScore > dataHandler.highScores.scores[i].score)
+            if (GameData.CurrentScore > dataHandler.highScores.scores[i].score)
             {
                 return true;
             }
@@ -114,7 +113,7 @@ public class GameScoreUpdater : Singleton<GameScoreUpdater>
         }
 
         // Initialise a new high score and add it to the list of existing ones
-        Score newHighScore = new Score(levelInformation.CurrentScore, inputtedTag);
+        Score newHighScore = new Score(GameData.CurrentScore, inputtedTag);
         dataHandler.AddToHighscore(newHighScore);
 
         ReturnToMenu();

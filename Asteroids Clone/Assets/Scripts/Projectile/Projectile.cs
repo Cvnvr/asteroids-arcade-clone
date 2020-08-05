@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Net;
+using UnityEngine;
 
 /// <summary>
 /// Attached to the projectile prefab.
@@ -23,23 +24,6 @@ public class Projectile : MonoBehaviour, IPooledObject
     #endregion Initialisation
 
     /// <summary>
-    /// Called by the projectile pooler when the projectile is retrieved from the pool
-    /// </summary>
-    public void OnObjectSpawn()
-    {
-        // Start countdown until projectile should destroy itself
-        Invoke("DestroySelf", lifeSpan);
-
-        fireSound.Play();
-    }
-
-    private void DestroySelf()
-    {
-        // Returns itself to the pool
-        ProjectilePooler.Instance.ReturnToPool(ProjectilePooler.Instance.DefaultProjectileTag, this);
-    }
-
-    /// <summary>
     /// Called by the ProjectileSpawner to apply the desired velocity
     /// </summary>
     public void Fire(Vector2 velocity)
@@ -47,12 +31,34 @@ public class Projectile : MonoBehaviour, IPooledObject
         rigidbody.velocity = velocity;
     }
 
+    /// <summary>
+    /// Called by the projectile pooler when the projectile is retrieved from the pool
+    /// </summary>
+    public void OnObjectSpawn()
+    {
+        fireSound.Play();
+
+        // Start countdown until projectile should destroy itself
+        Invoke("DestroySelf", lifeSpan);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Handle the projectile destroying itself if it collides with an asteroid
-        if (collision.gameObject.CompareTag("Asteroid"))
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+
+        if (damageable != null)
         {
+            // Invoke the shootable object response
+            damageable.TakeDamage();
+
+            // Return to pool on collision with a shootable object
             DestroySelf();
         }
+    }
+
+    private void DestroySelf()
+    {
+        // Returns itself to the pool
+        ProjectilePooler.Instance.ReturnToPool(ProjectilePooler.Instance.DefaultProjectileTag, this);
     }
 }

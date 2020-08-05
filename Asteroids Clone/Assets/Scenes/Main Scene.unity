@@ -2607,7 +2607,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 613e5b3263a8cd343bdc2b426127b18d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelInformation: {fileID: 11400000, guid: abdd692f9002cf943917d4998e36267e, type: 2}
   scoreLabel: {fileID: 155130831}
   tagInputField: {fileID: 1396442785}
 --- !u!4 &321255850
@@ -5941,6 +5940,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1094153015}
   - component: {fileID: 1094153014}
+  - component: {fileID: 1094153018}
   - component: {fileID: 1094153016}
   - component: {fileID: 1094153017}
   m_Layer: 0
@@ -6015,6 +6015,18 @@ MonoBehaviour:
   menuStateHandler: {fileID: 1094153016}
   containerCG: {fileID: 811516507}
   gameOverSound: {fileID: 109342856}
+--- !u!114 &1094153018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094153013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6783f114b44a03c4f95ee07d556df0a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1118968751
 GameObject:
   m_ObjectHideFlags: 0
@@ -6566,7 +6578,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49aa02e3912856c4280595614f49b3e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelInformation: {fileID: 11400000, guid: abdd692f9002cf943917d4998e36267e, type: 2}
   playerPrefab: {fileID: 6709321643027807285, guid: 32e873a7dc3fa7a49b2a0a854ca2eb5b,
     type: 3}
   playerParent: {fileID: 1200292771}
@@ -8209,7 +8220,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   asteroidSpawner: {fileID: 308842959}
-  levelInformation: {fileID: 11400000, guid: abdd692f9002cf943917d4998e36267e, type: 2}
   levelLabel: {fileID: 1118968754}
 --- !u!1 &1638225624
 GameObject:

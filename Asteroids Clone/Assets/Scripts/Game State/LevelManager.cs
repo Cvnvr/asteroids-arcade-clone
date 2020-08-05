@@ -9,9 +9,6 @@ public class LevelManager : MonoBehaviour
     #region Variables
     [Header("Script References")]
     [SerializeField] private AsteroidSpawner asteroidSpawner;
-    [SerializeField] private LevelInformation levelInformation;
-
-    public Color32 LevelColor { get => levelInformation.LevelColor; }
 
     [SerializeField] private TMP_Text levelLabel;
     #endregion Variables
@@ -33,7 +30,8 @@ public class LevelManager : MonoBehaviour
     /// </summary>
     public void InitialiseFirstLevelState()
     {
-        levelInformation.CurrentLevel = 0;
+        GameData.ResetGameData();
+
         GoToNextLevel();
     }
 
@@ -42,29 +40,26 @@ public class LevelManager : MonoBehaviour
     /// </summary>
     public void GoToNextLevel()
     {
-        levelInformation.CurrentLevel++;
-
+        GameData.IncrementLevel();
         IncreaseDifficultyOfLevel();
+        levelLabel.text = GameData.CurrentLevel.ToString();
 
         GenerateNewRandomLevelColor();
-
         asteroidSpawner.EnableNewBatchOfLargeAsteroids();
-
-        levelLabel.text = levelInformation.CurrentLevel.ToString();
 
         #region Local Functions
         void GenerateNewRandomLevelColor()
         {
             // Randomise the colour of the astroids each level
-            if (levelInformation.CurrentLevel == 1)
+            if (GameData.CurrentLevel == 1)
             {
                 // Just return new random colour if level 1
-                levelInformation.LevelColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+                GameData.GenerateInitialColor();
             }
             else
             {
                 // Generate a distinct colour each subsequent round
-                levelInformation.LevelColor = ColorGenerator.GenerateDistinctRandomColor(levelInformation.LevelColor);
+                GameData.GenerateNewDistinctColor();
             }
         }
         #endregion Local Functions
@@ -73,7 +68,7 @@ public class LevelManager : MonoBehaviour
     private void IncreaseDifficultyOfLevel()
     {
         // Increase the number of spawned large asteroids every 2 levels
-        if (levelInformation.CurrentLevel % 2 == 0)
+        if (GameData.CurrentLevel % 2 == 0)
         {
             asteroidSpawner.IncreaseNumberOfAsteroids();
         }

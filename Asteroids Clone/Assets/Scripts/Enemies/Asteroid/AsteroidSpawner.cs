@@ -61,7 +61,7 @@ public class AsteroidSpawner : MonoBehaviour
         for (int i = 0; i < largeAsteroidSpawnCount; i++)
         {
             asteroidPooler.SpawnFromPool(asteroidPooler.LargePoolTag,
-                spawnerLocations[spawnIndecies[i]].localPosition, levelManager.LevelColor);
+                spawnerLocations[spawnIndecies[i]].localPosition);
         }
 
         #region Local Functions
@@ -100,7 +100,7 @@ public class AsteroidSpawner : MonoBehaviour
     {
         for (int i = 0; i < asteroidSplitCount; i++)
         {
-            asteroidPooler.SpawnFromPool(asteroidPooler.MediumPoolTag, asteroid.transform.position, levelManager.LevelColor);
+            asteroidPooler.SpawnFromPool(asteroidPooler.MediumPoolTag, asteroid.transform.position);
         }
 
         // Return 'destroyed' asteroid to the pool
@@ -116,7 +116,7 @@ public class AsteroidSpawner : MonoBehaviour
     {
         for (int i = 0; i < asteroidSplitCount; i++)
         {
-            asteroidPooler.SpawnFromPool(asteroidPooler.SmallPoolTag, asteroid.transform.position, levelManager.LevelColor);
+            asteroidPooler.SpawnFromPool(asteroidPooler.SmallPoolTag, asteroid.transform.position);
         }
 
         // Return 'destroyed' asteroid to the pool

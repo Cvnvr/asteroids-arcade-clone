@@ -5,6 +5,14 @@ using UnityEngine;
 public static class ColorGenerator
 {
     /// <summary>
+    /// Returns a new random color
+    /// </summary>
+    public static Color GenerateNewRandomColor()
+    {
+        return Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+    }
+
+    /// <summary>
     /// Returns a color that is distinctly different to the color provided.
     /// </summary>
     public static Color GenerateDistinctRandomColor(Color previousColor)

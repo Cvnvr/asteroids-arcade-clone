@@ -1,19 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// Base class for the Asteroid objects.
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
-public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, IScoreGiver
+public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IDamageable, IScoreGiver
 {
     #region Variables
     protected AsteroidSpawner asteroidSpawner;
-
-    // Each asteroid size has a different speed/score set in inspector
-    [SerializeField] private float speed = 1f;
-    [SerializeField] private int score = 100;
-
     private Rigidbody2D rigidbody;
+
+    [SerializeField] protected EnemyData asteroidData;
     #endregion Variables
 
     #region Initialisation
@@ -40,38 +38,32 @@ public class Asteroid : MonoBehaviour, IPooledObject, IMoveable, IShootable, ISc
     public void OnObjectSpawn()
     {
         // Randomise the movement direction of the asteroid to introduce variety
-        float rotation = Random.Range(0f, 361f);
+        float rotation = UnityEngine.Random.Range(0f, 361f);
         float currentRotation = transform.localRotation.eulerAngles.z;
         transform.localRotation = Quaternion.Euler(new Vector3(0, 0, currentRotation + rotation));
     }
 
     private void FixedUpdate()
     {
-        Move();
-    }
-
-    public void Move()
-    {
         // Normalize velocity to maintain constant speed
-        rigidbody.velocity = rigidbody.velocity.normalized * speed;
-        rigidbody.AddForce(transform.up * speed, ForceMode2D.Force);
+        rigidbody.velocity = rigidbody.velocity.normalized * asteroidData.MovementSpeed;
+        var direction = transform.up * asteroidData.MovementSpeed;
+
+        Move(direction);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void Move(Vector3 direction)
     {
-        if (collision.gameObject.CompareTag("Projectile"))
-        {
-            TakeDamage();
-        }
+        rigidbody.AddForce(direction, ForceMode2D.Force);
     }
 
     public virtual void TakeDamage()
     {
-        GiveScore();
+        GiveScore(asteroidData.Score);
     }
 
-    public void GiveScore()
+    public void GiveScore(int score)
     {
-        GameScoreUpdater.Instance.UpdateScore(score);
+        GameEvents.Instance.ProvideScore(score);
     }
 }

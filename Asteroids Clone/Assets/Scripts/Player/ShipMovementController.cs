@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// Handles the player movement
@@ -19,8 +20,7 @@ public class ShipMovementController : MonoBehaviour, IMoveable
     private float rotationalInput;
     [SerializeField] private float maxRotationalSpeed;
 
-    public delegate void OnPlayerCollision();
-    public event OnPlayerCollision onPlayerTakeDamage;
+    public event Action OnPlayerTakesDamage;
     #endregion Variables
 
     #region Initialisation
@@ -35,24 +35,24 @@ public class ShipMovementController : MonoBehaviour, IMoveable
         // Retrieves input values from player
         forwardInput = PlayerInputHandler.GetForwardInput();
         rotationalInput = PlayerInputHandler.GetRotationalInput();
-
-        // Applies clamped velocity to ensure player doesn't exceed max speed
-        rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, maxSpeed);
     }
 
     private void FixedUpdate()
     {
-        Move();
-    }
-
-    public void Move()
-    {
-        // MOVE
-        rigidbody.AddForce(forwardInput * forwardThrust * Time.deltaTime * transform.up);
-
         // ROTATE
         float rotation = Mathf.Clamp(rotationalInput * rotationalThrust * Time.deltaTime, -maxRotationalSpeed, maxRotationalSpeed);
         rigidbody.AddTorque(-rotation);
+
+        // MOVE
+        rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, maxSpeed);
+
+        var direction = forwardInput * forwardThrust * Time.deltaTime * transform.up;
+        Move(direction);
+    }
+
+    public void Move(Vector3 direction)
+    {
+        rigidbody.AddForce(direction);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -60,7 +60,7 @@ public class ShipMovementController : MonoBehaviour, IMoveable
         // Kill the player if they collide with an asteroid
         if (collision.gameObject.CompareTag("Asteroid"))
         {
-            onPlayerTakeDamage.Invoke();
+            OnPlayerTakesDamage?.Invoke();
         }
     }
 }

@@ -1,4 +1,4 @@
 ﻿public interface IScoreGiver
 {
-    void GiveScore();
+    void GiveScore(int score);
 }

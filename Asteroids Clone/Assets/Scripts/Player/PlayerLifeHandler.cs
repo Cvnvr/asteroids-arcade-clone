@@ -11,9 +11,6 @@ public class PlayerLifeHandler : MonoBehaviour
     [Header("Script References")]
     private GameStateHandler gameStateHandler;
 
-    [Header("Level Data")]
-    [SerializeField] private LevelInformation levelInformation;
-
     [Header("Player References")]
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Transform playerParent;
@@ -50,7 +47,6 @@ public class PlayerLifeHandler : MonoBehaviour
     public void InitialisePlayerState()
     {
         // Resets player lives back to default
-        levelInformation.CurrentLives = maxPlayerLives;
         UpdateLifeSprites();
 
         SpawnPlayer();
@@ -68,7 +64,7 @@ public class PlayerLifeHandler : MonoBehaviour
         player.transform.rotation = Quaternion.identity;
 
         // Subscribe to the player damage event
-        player.GetComponent<ShipMovementController>().onPlayerTakeDamage += TakeDamage;
+        player.GetComponent<ShipMovementController>().OnPlayerTakesDamage += TakeDamage;
     }
 
     #region Player Death
@@ -78,17 +74,17 @@ public class PlayerLifeHandler : MonoBehaviour
     public void TakeDamage()
     {
         // Unsubscribe to the event before the player is destroyed
-        player.GetComponent<ShipMovementController>().onPlayerTakeDamage -= TakeDamage;
+        player.GetComponent<ShipMovementController>().OnPlayerTakesDamage -= TakeDamage;
 
         // Destroy the player
         Destroy(player.gameObject);
         playerExplosion.Play();
 
         // Update lives counter
-        levelInformation.CurrentLives -= 1;
+        GameData.RemovePlayerLife();
         UpdateLifeSprites();
 
-        if (levelInformation.CurrentLives >= 1)
+        if (GameData.CurrentLives >= 1)
         {
             // Respawn the player if they still have some lives left
             Invoke("RespawnPlayerAfterDeath", 1f);
@@ -167,13 +163,13 @@ public class PlayerLifeHandler : MonoBehaviour
             lifeSprites[i].SetActive(false);
         }
 
-        if (levelInformation.CurrentLives == 0)
+        if (GameData.CurrentLives == 0)
         {
             return;
         }
 
         // Enable remaining lives
-        for (int i = 0; i < levelInformation.CurrentLives; i++)
+        for (int i = 0; i < GameData.CurrentLives; i++)
         {
             if (i < lifeSprites.Count)
             {

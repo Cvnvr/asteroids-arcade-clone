@@ -50,20 +50,17 @@ public class GameOverSequence : MonoBehaviour
         gameOverSound.Play();
 
         yield return new WaitForSeconds(1f);
-
-        // Lerp CanvasGroup on
         yield return StartCoroutine(CanvasGroupFader.FadeCanvas(containerCG, 0, 1, 2.5f));
-
         yield return new WaitForSeconds(2f);
 
         // Validate whether the player beat a current high score
-        if (GameScoreUpdater.Instance.ValidateHighScore())
-        {
-            menuStateHandler.DisplayNewHighScoreContainer();
-        }
-        else
-        {
-            menuStateHandler.DisplayNoNewHighScoreContainer();
-        }
+        //if (GameScoreUpdater.Instance.ValidateHighScore())
+        //{
+        //    menuStateHandler.DisplayNewHighScoreContainer();
+        //}
+        //else
+        //{
+        //    menuStateHandler.DisplayNoNewHighScoreContainer();
+        //}
     }
 }

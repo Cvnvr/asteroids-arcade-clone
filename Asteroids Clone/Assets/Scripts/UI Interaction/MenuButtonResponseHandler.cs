@@ -23,6 +23,8 @@ public class MenuButtonResponseHandler : MonoBehaviour
     public void Play()
     {
         PlayAudioClip();
+
+        GameData.ResetGameData();
         gameStateHandler.SetGameState(GameState.Game);
     }
 

@@ -98,7 +98,7 @@ public class AsteroidPooler : MonoBehaviour
     }
     #endregion Initialisation
 
-    public Asteroid SpawnFromPool(string tag, Vector3 position, Color32 color)
+    public Asteroid SpawnFromPool(string tag, Vector3 position)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
@@ -111,7 +111,7 @@ public class AsteroidPooler : MonoBehaviour
         // Initialise spawned Asteroid
         spawnedAsteroid.gameObject.SetActive(true);
         spawnedAsteroid.transform.localPosition = position;
-        spawnedAsteroid.GetComponent<SpriteRenderer>().color = color;
+        spawnedAsteroid.GetComponent<SpriteRenderer>().color = GameData.LevelColor;
 
         // Call the 'Start()' substitute function on the pooled object
         spawnedAsteroid.OnObjectSpawn();

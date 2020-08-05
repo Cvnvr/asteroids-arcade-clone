@@ -1,4 +1,6 @@
-﻿public interface IMoveable
+﻿using UnityEngine;
+
+public interface IMoveable
 {
-    void Move();
+    void Move(Vector3 direction);
 }

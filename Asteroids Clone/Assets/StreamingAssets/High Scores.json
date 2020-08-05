@@ -21,6 +21,10 @@
             "tag": "Lol"
         },
         {
+            "score": 3370,
+            "tag": "Con"
+        },
+        {
             "score": 3050,
             "tag": "Eth"
         },
@@ -35,10 +39,6 @@
         {
             "score": 2710,
             "tag": "Tag"
-        },
-        {
-            "score": 2600,
-            "tag": "Jak"
         }
     ]
 }
